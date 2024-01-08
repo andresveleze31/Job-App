@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useJobtex from "../hooks/useJobtex";
 
 function NavBarHome() {
+
+  const {setLogin} = useJobtex();
+
   return (
     <div className=" border-b border-slate-100 border-opacity-15 py-[2rem]">
       <div className="contenedor flex items-center  justify-between">
@@ -36,7 +40,9 @@ function NavBarHome() {
             src="../../public/icons/icon_notificacion_white.png"
             alt="Icon Notification"
           />
-          <button className="flex font-semibold gap-[1rem] text-[1.4rem] text-white">
+          <button
+            onClick={() => setLogin(true)}
+           className="flex font-semibold gap-[1rem] text-[1.4rem] text-white">
             <img
               className="w-[2.5rem]"
               src="../public/icons/icon_user_white.png"

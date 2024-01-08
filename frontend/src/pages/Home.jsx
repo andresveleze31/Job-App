@@ -8,10 +8,16 @@ import TopEmployers from "../components/home/TopEmployers";
 import ActiveSlider from "../components/home/ActiveSlider";
 import Clients from "../components/home/Clients";
 import Footer from "../components/home/Footer";
+import useJobtex from "../hooks/useJobtex";
+import ModalLogin from "../components/ModalLogin";
 
 function Home() {
+
+  const {login} = useJobtex();
+
   return (
     <div>
+      {login && <ModalLogin />}
       <header className="header  ">
       <NavBarHome />
       <div className="contenedor py-[15rem]">

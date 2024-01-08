@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"
 
 const candidateSchema = mongoose.Schema(
   {
@@ -32,6 +33,20 @@ const candidateSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+candidateSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    //Si ya esta hasheado...
+    next();
+  }
+  //Si no esta hasheado...
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+candidateSchema.methods.comprobarPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 const Candidate = mongoose.model("Candidate", candidateSchema);
 export default Candidate
