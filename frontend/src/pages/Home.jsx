@@ -14,7 +14,7 @@ function Home() {
     <div>
       <header className="header  ">
       <NavBarHome />
-      <div className="contenedor py-[10rem]">
+      <div className="contenedor py-[15rem]">
         <div className="text-white w-1/2 flex flex-col items-start">
           <h1 className="font-bold">Find The Job That Fits Your Life</h1>
           <p>

@@ -52,26 +52,31 @@
     margin: 0 auto;
   }
 
+  /* Ajuste para pantallas más grandes */
+  @media screen and (min-width: 1450px) {
+    .contenedor {
+      max-width: 1400px; /* Puedes ajustar el porcentaje según tus necesidades */
+    }
+  }
+
   .header {
-    background-image: url("../public/images/home_banner.jpg"); 
+    background-image: url("../public/images/home_banner.jpg");
     background-size: cover;
-    background-position: center; 
+    background-position: center;
     background-repeat: no-repeat;
   }
 
   .hero_candidate {
-    background-image: url("../public/images/hero_candidate.jpg"); 
+    background-image: url("../public/images/hero_candidate.jpg");
     background-size: cover;
-    background-position: center; 
+    background-position: center;
     background-repeat: no-repeat;
   }
 
   .hero_employer {
-    background-image: url("../public/images/banner-employer_detail.jpg"); 
+    background-image: url("../public/images/banner-employer_detail.jpg");
     background-size: cover;
-    background-position: center; 
+    background-position: center;
     background-repeat: no-repeat;
   }
-
-
 }
