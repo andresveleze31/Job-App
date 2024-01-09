@@ -30,10 +30,10 @@ const AuthCandidateProvider = ({ children }) => {
 
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/candidate/profile`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/candidates/profile`,
           config
         );
-        setAuth(data);
+        setAuthCandidate(data);
       } catch (error) {
         console.log(error);
       }
@@ -43,4 +43,21 @@ const AuthCandidateProvider = ({ children }) => {
 
     autenticarCandidate();
   }, []);
+
+  return (
+    <AuthCandidateContext.Provider
+      value={{
+        authCandidate,
+        setAuthCandidate,
+        cargando,
+      }}
+    >
+      {children}
+    </AuthCandidateContext.Provider>
+  );
+
 };
+
+export { AuthCandidateProvider };
+
+export default AuthCandidateContext;

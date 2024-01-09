@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function SidebarCandidate() {
   return (
-    <aside className="flex h-[calc(100vh-90px)] items-start flex-col gap-[1rem] px-[1.5rem] py-[3rem]  ">
+    <aside className="flex h-[calc(100vh-90px)]  items-start flex-col gap-[1rem] px-[1.5rem] py-[3rem]  ">
       <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"profile"}>
         <img
           className="w-[2rem] h-[2rem] "
