@@ -77,6 +77,15 @@ const JobtexProvider = ({ children }) => {
         getForeign();
       }, []);
 
+      async function getProfile(){
+        try {
+                    
+
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
     return (
       <JobtexContext.Provider
         value={{

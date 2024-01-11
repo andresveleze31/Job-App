@@ -8,6 +8,7 @@ const AuthCandidateContext = createContext();
 const AuthCandidateProvider = ({ children }) => {
   const [authCandidate, setAuthCandidate] = useState({});
   const [cargando, setCargando] = useState(true);
+  const [tokenC, setTokenC] = useState();
 
   const navigate = useNavigate();
 
@@ -20,6 +21,8 @@ const AuthCandidateProvider = ({ children }) => {
         setCargando(false);
         return;
       }
+
+      setTokenC(tokenCandidate);
 
       const config = {
         headers: {
@@ -50,6 +53,7 @@ const AuthCandidateProvider = ({ children }) => {
         authCandidate,
         setAuthCandidate,
         cargando,
+        tokenC
       }}
     >
       {children}

@@ -1,5 +1,6 @@
 import Candidate from "../models/Candidate.js";
 import generarJWT from "../helpers/generarJWT.js";
+import multer from "multer";
 
 //Register Candidate
 async function registerCandidate(req, res) {
@@ -40,18 +41,41 @@ async function loginCandidate(req, res) {
         token: generarJWT(candidate._id),
       });
     } else {
-
       const error = new Error("Invalid Password");
       return res.status(403).json({ msg: error.message });
     }
-
   } catch (error) {
     console.log(error);
   }
 }
 
-async function profile(req, res){
-    res.json(req.candidate);
-} 
 
-export { registerCandidate, loginCandidate, profile };
+async function updateProfile(req, res) {
+
+  const { id } = req.params;
+  console.log(id);
+
+  try {
+    const profileUpdated = await Candidate.findOneAndUpdate(
+      { _id: id },
+      {
+        ...req.body,
+      }
+    );
+
+    if (!profileUpdated) {
+      return res.status(404).json({ error: "Candidate Not Found" });
+    }
+
+    return res.json(profileUpdated);
+
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+async function profile(req, res) {
+  res.json(req.candidate);
+}
+
+export { registerCandidate, loginCandidate, profile, updateProfile };
