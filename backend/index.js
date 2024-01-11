@@ -4,6 +4,8 @@ import conectarDB from "./config/db.js";
 import cors from "cors";
 
 import candidateRoutes from "./routes/candidateRoutes.js";
+import foreignRoutes from "./routes/foreignRoutes.js";
+import { ingresarDatos } from "./config/seed.js";
 
 const app = express();
 
@@ -28,8 +30,11 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
+//Seeding
+
 //Routing
 app.use("/api/candidates", candidateRoutes);
+app.use("/api/foreign", foreignRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Escuchando en puerto ${process.env.PORT}`);

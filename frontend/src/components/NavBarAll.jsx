@@ -8,7 +8,7 @@ function NavBarAll() {
   const {setLogin} = useJobtex();
 
   return (
-    <div className="border-b">
+    <div className="border-b ">
       <div className=" border-b border-slate-100 border-opacity-15 py-[2rem]">
         <div className="contenedor flex items-center  justify-between">
           <div className="flex gap-[4rem] items-center ">

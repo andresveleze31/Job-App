@@ -2,7 +2,7 @@ import React from "react";
 
 function CandidateAside() {
   return (
-    <div>
+    <div >
       <div className="py-[2.5rem] border border-opacity-40 px-[3rem] bg-slate-100 rounded-2xl mt-[-20rem] ">
         <h3 className="font-bold">Information</h3>
 
