@@ -49,9 +49,23 @@ async function loginCandidate(req, res) {
   }
 }
 
+async function getProfile(req, res) {
+  const { id } = req.params;
+
+  try {
+    const candidate = await Candidate.findOne({ _id: id });
+
+    if (!candidate) {
+      return res.status(404).json({ error: "Candidate Not Found" });
+    }
+
+    return res.json(candidate);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 
 async function updateProfile(req, res) {
-
   const { id } = req.params;
   console.log(id);
 
@@ -68,7 +82,6 @@ async function updateProfile(req, res) {
     }
 
     return res.json(profileUpdated);
-
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -78,4 +91,4 @@ async function profile(req, res) {
   res.json(req.candidate);
 }
 
-export { registerCandidate, loginCandidate, profile, updateProfile };
+export { registerCandidate, loginCandidate, profile, updateProfile, getProfile };

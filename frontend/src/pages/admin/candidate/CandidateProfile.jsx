@@ -11,6 +11,7 @@ function CandidateProfile() {
   const [networksNumber, setNetworksNumber] = useState(0);
 
   const [file, setFile] = useState(); //photo
+  const [imageURL, setImageURL] = useState(""); //URL Image
   const [fullName, setFullname] = useState(""); //fullname
   const [birth, setBirth] = useState(0); //birth
   const [number, setNumber] = useState(0); //number
@@ -31,6 +32,8 @@ function CandidateProfile() {
   const [videoURL, setVideoURL] = useState("");
   const [emailId, setEmailId] = useState("");
 
+  const [cargando, setCargando] = useState(true);
+
   const [networksArray, setNetworksArray] = useState([
     { social: "", url: "" },
     { social: "", url: "" },
@@ -39,8 +42,60 @@ function CandidateProfile() {
     { social: "", url: "" },
   ]);
 
+  //Llenar los campos...
+  async function getProfile() {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenC}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/candidates/get-profile/${
+        authCandidate._id
+      }`,
+      config
+    );
+
+    //Set Normal Data
+    setFullname(data.fullname);
+    setBirth(data.birth);
+    setNumber(data.number);
+    setEmailId(data.email);
+    setGenderId(data.gender_id);
+    setAge(data.age);
+    setSalary(data.salary);
+    setSalaryTypeId(data.salaryType);
+    setQualificationId(data.qualification_id);
+    setExperience(data.experiencetime);
+    setCategorieId(data.categorie_id);
+    setLanguageId(data.language_id);
+    setJobtitle(data.jobtitle);
+    setAboutMe(data.aboutme);
+    setAddress(data.address);
+    setVideoURL(data.video);
+    setLocationId(data.location_id);
+    setLatitude(data.lat);
+    setLongitude(data.long);
+    setImageURL(data.photo);
+
+    //Set the array,
+    ///get-candidate-networks/:id
+    const candidateNet = await axios.get(
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/network//get-candidate-networks/${authCandidate._id}`
+    );
+    setNetworksNumber(candidateNet.data.length);
+    setNetworksArray(candidateNet.data);
+    setCargando(false);
+
+    console.log(data);
+  }
+
   useEffect(() => {
-    // Your useEffect code here (if needed)
+    getProfile();
   }, []);
 
   function handleSelectSocial(index, e) {
@@ -69,8 +124,9 @@ function CandidateProfile() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     console.log(authCandidate);
+
+    
 
     if (
       [
@@ -99,6 +155,10 @@ function CandidateProfile() {
       return toast.error("All Fields are Required");
     }
 
+    if (!file.name) {
+      return toast.error("Image Not Found");
+    }
+
     console.log(networksArray.length);
 
     let networksIncomplete = false;
@@ -110,6 +170,14 @@ function CandidateProfile() {
     });
 
     try {
+      //Guardar Imagen.
+      const formdata = new FormData();
+      formdata.append("file", file);
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/foreign/upload`,
+        formdata
+      );
+
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -122,7 +190,7 @@ function CandidateProfile() {
           authCandidate._id
         }`,
         {
-          photo: file.name,
+          photo: res.data,
           fullname: fullName,
           birth,
           number,
@@ -146,7 +214,7 @@ function CandidateProfile() {
         config
       );
 
-      console.log(networksNumber)
+      console.log(networksNumber);
 
       if (networksNumber >= 1) {
         networksArray.forEach(async (net) => {
@@ -163,7 +231,6 @@ function CandidateProfile() {
               },
             }
           );
-
 
           if (networkExist.data.length > 0) {
             console.log("Actualizando...");
@@ -201,6 +268,8 @@ function CandidateProfile() {
     }
 
     toast.success("Profile Successfully Updated");
+    getProfile();
+    window.scrollTo(0, 0);
   }
 
   const {
@@ -231,6 +300,12 @@ function CandidateProfile() {
             >
               Featured Image
             </p>
+
+            <img
+              className="mb-[2rem] w-[15rem] h-[15rem] "
+              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${imageURL}`}
+              alt="Upload Your Image"
+            />
             <label
               className="py-[1rem]  px-[2rem] border bg-primary text-white font-bold transition-all duration-300 hover:bg-white hover:text-black hover:border hover:border-primary rounded-xl cursor-pointer"
               htmlFor="image"
@@ -604,6 +679,7 @@ function CandidateProfile() {
                         Network
                       </label>
                       <select
+                        value={networksArray[index].social_id}
                         onChange={(e) => {
                           handleSelectSocial(index, e);
                         }}
@@ -628,6 +704,7 @@ function CandidateProfile() {
                         )}
                       </select>
                       <input
+                        value={networksArray[index].url}
                         onChange={(e) => {
                           handleInputSocial(index, e);
                         }}
@@ -735,7 +812,11 @@ function CandidateProfile() {
                 Map
               </label>
 
-              <Map lat={4.6097} long={-74.0817} />
+              {cargando ? (
+                <p className="text-primary font-bold">Write your Coords</p>
+              ) : (
+                <Map lat={Number(latitude)} long={Number(longitude)} />
+              )}
             </div>
 
             <div className="grid grid-cols-2 mt-[2rem] gap-[3rem] ">

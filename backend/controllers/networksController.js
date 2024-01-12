@@ -29,17 +29,32 @@ async function updateSocialCandidate(req, res) {
 }
 
 async function getSocialCandidate(req, res) {
-
-    console.log(req.query.social_id, req.query.candidate_id);
-     try {
-       const socialCandidate = await SocialCandidate.find({
-         social_id: req.query.social_id,
-         candidate_id: req.query.candidate_id,
-       });
-       res.status(200).json(socialCandidate);
-     } catch (error) {
-       return res.status(400).json({ error: error.message });
-     }
+  console.log(req.query.social_id, req.query.candidate_id);
+  try {
+    const socialCandidate = await SocialCandidate.find({
+      social_id: req.query.social_id,
+      candidate_id: req.query.candidate_id,
+    });
+    res.status(200).json(socialCandidate);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
 }
 
-export { createSocialCandidate, updateSocialCandidate, getSocialCandidate };
+async function getSocialsCandidate(req, res) {
+  const { id } = req.params;
+
+  try {
+    const socials = await SocialCandidate.find({ candidate_id: id });
+    res.status(200).json(socials);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+}
+
+export {
+  createSocialCandidate,
+  updateSocialCandidate,
+  getSocialCandidate,
+  getSocialsCandidate,
+};

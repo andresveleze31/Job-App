@@ -4,9 +4,12 @@ import { MapContainer, Marker, TileLayer  } from 'react-leaflet'
 import {Icon} from "leaflet";
 
 function Map({lat, long}) {
+
+    console.log(lat, long)
+
     const markers = [
       {
-        geocode: [lat || 48.8566, long || 2.3522],
+        geocode: [lat , long ],
         popUp: "Location",
       },
     ];
@@ -17,7 +20,7 @@ function Map({lat, long}) {
     })
 
     return (
-        <MapContainer className='h-[35rem]' center={[lat || 48.8566, long || 2.3522]} zoom={13}>
+        <MapContainer className='h-[35rem]' center={[lat , long ]} zoom={13}>
             <TileLayer url='https://tile.openstreetmap.org/{z}/{x}/{y}.png' />
             {markers.map((marker, index) => (
                 <Marker key={index} icon={customIcon} position={marker.geocode} />

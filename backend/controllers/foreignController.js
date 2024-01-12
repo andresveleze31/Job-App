@@ -1,3 +1,4 @@
+import path from "path";
 import Categorie from "../models/Categorie.js";
 import Gender from "../models/Gender.js";
 import Language from "../models/Language.js";
@@ -5,6 +6,7 @@ import Location from "../models/Location.js";
 import Qualification from "../models/Qualification.js";
 import SalaryType from "../models/SalaryType.js";
 import Social from "../models/Social.js";
+import multer from "multer";
 
 
 async function getGenders(req, res){
@@ -71,6 +73,27 @@ async function getSocialNetworks(req, res){
     }
 }
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/uploads/")
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({
+    storage: storage
+})
+
+async function uploadFiles(req, res){
+    try {
+        res.send(req.file.filename);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {
   getGenders,
   getLanguages,
@@ -79,4 +102,6 @@ export {
   getCategories,
   getLocations,
   getSocialNetworks,
+  uploadFiles,
+  upload
 };
