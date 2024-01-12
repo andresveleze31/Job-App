@@ -1,6 +1,8 @@
 import Candidate from "../models/Candidate.js";
+import Education from "../models/Education.js";
 import generarJWT from "../helpers/generarJWT.js";
 import multer from "multer";
+import Experience from "../models/Experience.js";
 
 //Register Candidate
 async function registerCandidate(req, res) {
@@ -67,7 +69,7 @@ async function getProfile(req, res) {
 
 async function updateProfile(req, res) {
   const { id } = req.params;
-  console.log(id);
+  console.log(req.body.cv);
 
   try {
     const profileUpdated = await Candidate.findOneAndUpdate(
@@ -91,4 +93,119 @@ async function profile(req, res) {
   res.json(req.candidate);
 }
 
-export { registerCandidate, loginCandidate, profile, updateProfile, getProfile };
+async function createExperience(req, res) {
+  const { id } = req.params;
+  const { title, company, year, description } = req.body;
+
+  console.log(title, company, year, description);
+  try {
+    const experience = await Experience.create({
+      title,
+      company,
+      years: year,
+      description,
+      candidate_id: id,
+    });
+    res.json(experience);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+
+}
+
+async function createEducation(req, res) {
+  const { id } = req.params;
+  const { title, academy, year, description } = req.body;
+
+  try {
+    const education = await Education.create({
+      title,
+      academy,
+      years: year,
+      description,
+      candidate_id: id,
+    });
+    res.json(education);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+async function getExperience(req, res){
+  const { id } = req.params;
+
+  try {
+    const experience = await Experience.find({ candidate_id: id });
+    res.json(experience);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+
+async function getEducation(req, res) {
+  const { id } = req.params;
+
+  try {
+    const education = await Education.find({ candidate_id: id });
+    res.json(education);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+async function updateExperience(req, res){
+  const { id } = req.params;
+
+    try {
+      const experienceUpdated = await Experience.findOneAndUpdate(
+        { _id: id },
+        {
+          ...req.body,
+        }
+      );
+
+      if (!experienceUpdated) {
+        return res.status(404).json({ error: "Experience Not Found" });
+      }
+
+      return res.json(experienceUpdated);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+}
+
+async function updateEducation(req, res) {
+  const { id } = req.params;
+
+  try {
+    const educationUpdated = await Education.findOneAndUpdate(
+      { _id: id },
+      {
+        ...req.body,
+      }
+    );
+
+    if (!educationUpdated) {
+      return res.status(404).json({ error: "Education Not Found" });
+    }
+
+    return res.json(educationUpdated);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+export {
+  registerCandidate,
+  loginCandidate,
+  profile,
+  updateProfile,
+  getProfile,
+  createEducation,
+  getEducation,
+  updateEducation,
+  createExperience,
+  updateExperience,
+  getExperience
+};

@@ -9,7 +9,7 @@ function CandidatesLayout() {
     <div>
       <NavBarAll />
 
-      <div className="grid grid-cols-[1fr,5fr]  ">
+      <div className="grid grid-cols-[1fr,5fr] h-[100vh]  ">
         <Toaster duration={4000} position="bottom-center" />
         <SidebarCandidate />
         <div className="bg-gray-100 h-[90vh] overflow-y-scroll px-[20rem] py-[2rem]  ">
