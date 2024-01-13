@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"
 
 const employerSchema = mongoose.Schema(
   {
@@ -22,6 +23,20 @@ const employerSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+employerSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    //Si ya esta hasheado...
+    next();
+  }
+  //Si no esta hasheado...
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+employerSchema.methods.comprobarPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 const Employer = mongoose.model("Employer", employerSchema);
 export default Employer;

@@ -27,49 +27,57 @@ import CandidatePassword from "./pages/admin/candidate/CandidatePassword";
 import CandidateLogout from "./pages/admin/candidate/CandidateLogout";
 import { JobtexProvider } from "./context/JobtexProvider";
 import { AuthCandidateProvider } from "./context/AuthCandidateProvider";
+import { AuthEmployerProvider } from "./context/AuthEmployerProvider";
 import ProtectedCandidate from "./layouts/ProtectedCandidate";
+import ProtectedEmployer from "./layouts/ProtectedEmployer";
 
 function App() {
   return (
     <BrowserRouter>
       <JobtexProvider>
         <AuthCandidateProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/" element={<PageLayout />}>
-              <Route path="jobs" element={<Jobs />} />
-              <Route path="employers" element={<Employers />} />
-              <Route path="candidates" element={<Candidates />} />
-              <Route path="candidates/:id" element={<CandidateDetail />} />
-              <Route path="employers/:id" element={<EmployerDetails />} />
-              <Route path="jobs/:id" element={<JobDetails />} />
-            </Route>
-
-            <Route path="/admin/employer/" element={<EmployersLayout />}>
-              <Route path="profile" element={<Profile />} />
-              <Route path="jobs" element={<EmployerJobs />} />
-              <Route path="create-job" element={<NewJob />} />
-              <Route path="job-applicants" element={<Applicants />} />
-              <Route path="favorites" element={<Favorites />} />
-              <Route path="messages" element={<Messages />} />
-              <Route path="change-password" element={<ChangePassword />} />
-              <Route path="logout" element={<Logout />} />
-            </Route>
-
-            <Route path="/" element={<ProtectedCandidate />}>
-              <Route path="/admin/candidate/" element={<CandidatesLayout />}>
-                <Route path="profile" element={<CandidateProfile />} />
-                <Route path="my-applied" element={<CandidateJobs />} />
-                <Route path="resume" element={<CandidateResume />} />
-                <Route path="followers" element={<CandidateFollowers />} />
-                <Route path="favorites" element={<CandidateFavorites />} />
-                <Route path="messages" element={<CandidateMessages />} />
-                <Route path="change-password" element={<CandidatePassword />} />
-                <Route path="logout" element={<CandidateLogout />} />
+          <AuthEmployerProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/" element={<PageLayout />}>
+                <Route path="jobs" element={<Jobs />} />
+                <Route path="employers" element={<Employers />} />
+                <Route path="candidates" element={<Candidates />} />
+                <Route path="candidates/:id" element={<CandidateDetail />} />
+                <Route path="employers/:id" element={<EmployerDetails />} />
+                <Route path="jobs/:id" element={<JobDetails />} />
               </Route>
-            </Route>
-            
-          </Routes>
+
+              <Route path="/" element={<ProtectedEmployer />}>
+                <Route path="/admin/employer/" element={<EmployersLayout />}>
+                  <Route path="profile" element={<Profile />} />
+                  <Route path="jobs" element={<EmployerJobs />} />
+                  <Route path="create-job" element={<NewJob />} />
+                  <Route path="job-applicants" element={<Applicants />} />
+                  <Route path="favorites" element={<Favorites />} />
+                  <Route path="messages" element={<Messages />} />
+                  <Route path="change-password" element={<ChangePassword />} />
+                  <Route path="logout" element={<Logout />} />
+                </Route>
+              </Route>
+
+              <Route path="/" element={<ProtectedCandidate />}>
+                <Route path="/admin/candidate/" element={<CandidatesLayout />}>
+                  <Route path="profile" element={<CandidateProfile />} />
+                  <Route path="my-applied" element={<CandidateJobs />} />
+                  <Route path="resume" element={<CandidateResume />} />
+                  <Route path="followers" element={<CandidateFollowers />} />
+                  <Route path="favorites" element={<CandidateFavorites />} />
+                  <Route path="messages" element={<CandidateMessages />} />
+                  <Route
+                    path="change-password"
+                    element={<CandidatePassword />}
+                  />
+                  <Route path="logout" element={<CandidateLogout />} />
+                </Route>
+              </Route>
+            </Routes>
+          </AuthEmployerProvider>
         </AuthCandidateProvider>
       </JobtexProvider>
     </BrowserRouter>

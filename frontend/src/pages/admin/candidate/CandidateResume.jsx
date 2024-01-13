@@ -431,7 +431,6 @@ function CandidateResume() {
                         Year
                       </label>
                       <input
-                        //value={networksArray[index].url}
                         value={experienceArray[index].years}
                         onChange={(e) => {
                           setExperienceArray((prevExperienceArray) => {

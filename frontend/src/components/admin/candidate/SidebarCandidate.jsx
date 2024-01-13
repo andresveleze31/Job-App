@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom'
 
 function SidebarCandidate() {
   return (
-    <aside className="flex h-[100vh]  items-start flex-col gap-[1rem] px-[1.5rem] pt-[3rem]  ">
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"profile"}>
+    <aside className="flex h-[calc(100vh-90px)] items-start flex-col gap-[1rem] px-[1.5rem] py-[3rem]   ">
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"profile"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_profile.png"
@@ -13,7 +16,10 @@ function SidebarCandidate() {
         Profile
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"resume"}>
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"resume"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_resume.png"
@@ -22,7 +28,10 @@ function SidebarCandidate() {
         My Resume
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"followers"}>
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"followers"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_follow.png"
@@ -31,7 +40,10 @@ function SidebarCandidate() {
         Followers
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"my-applied"}>
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"my-applied"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_forms.png"
@@ -40,7 +52,10 @@ function SidebarCandidate() {
         My Applied
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"favorites"}>
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"favorites"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_favorites.png"
@@ -49,7 +64,10 @@ function SidebarCandidate() {
         Favorites
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"messages"}>
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"messages"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_message.png"
@@ -58,7 +76,10 @@ function SidebarCandidate() {
         Messages
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"change-password"}>
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"change-password"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_password.png"
@@ -67,7 +88,10 @@ function SidebarCandidate() {
         Change Password
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"logout"}>
+      <Link
+        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
+        to={"logout"}
+      >
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_logout.png"
@@ -76,7 +100,7 @@ function SidebarCandidate() {
         Logout
       </Link>
     </aside>
-  )
+  );
 }
 
 export default SidebarCandidate

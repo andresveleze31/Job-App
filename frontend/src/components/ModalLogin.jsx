@@ -1,26 +1,33 @@
-import React, { useState } from 'react'
-import useJobtex from '../hooks/useJobtex';
-import Error from './Error';
-import axios from 'axios';
-import useAuthCandidate from '../hooks/useAuthCandidate';
+import React, { useState } from "react";
+import useJobtex from "../hooks/useJobtex";
+import Error from "./Error";
+import axios from "axios";
+import useAuthCandidate from "../hooks/useAuthCandidate";
+import useAuthEmployer from "../hooks/useAuthEmployer";
 
 function ModalLogin() {
+  const { setLogin } = useJobtex();
+  const { setAuthCandidate } = useAuthCandidate();
+  const { setAuthEmployer } = useAuthEmployer();
 
-  
-  const {setLogin} = useJobtex();
-
-  const {setAuthCandidate} = useAuthCandidate();
-  
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [selected, setSelected] = useState("");
 
+  function handleOptionChange(e) {
+    setSelected(e.target.value);
+    console.log(selected);
 
-  async function handleSubmit(e){
+    setTimeout(() => {
+      console.log(selected);
+    }, 3000);
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if ([email, password].includes("")) {
+    if ([email, password, selected].includes("")) {
       setError("All fields are required");
       setTimeout(() => {
         setError("");
@@ -28,26 +35,40 @@ function ModalLogin() {
       return;
     }
 
-    try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/candidates/login`,
-        {
-          email,
-          password,
-        }
-      );
+    if (selected === "candidate") {
+      try {
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/candidates/login`,
+          {
+            email,
+            password,
+          }
+        );
 
-      console.log(data);
-
-      setAuthCandidate(data);
-      localStorage.setItem("tokenCandidate", data.token);
-
-    } catch (error) {
-      console.log(error);
+        setAuthCandidate(data);
+        localStorage.setItem("tokenCandidate", data.token);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    
-  }
 
+    if (selected === "employer") {
+      try {
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/employers/login`,
+          {
+            email,
+            password,
+          }
+        );
+
+        setAuthEmployer(data);
+        localStorage.setItem("tokenEmployer", data.token);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50">
@@ -73,6 +94,40 @@ function ModalLogin() {
           </div>
 
           <form onSubmit={handleSubmit} className="mt-[3rem] ">
+            <div className="grid grid-cols-2 gap-[2rem] mb-[2rem] font-bold">
+              <label
+                className={
+                  selected === "candidate"
+                    ? "py-[1rem] bg-green-100 text-center rounded-xl cursor-pointer text-primary"
+                    : "py-[1rem] bg-gray-100 text-center rounded-xl cursor-pointer "
+                }
+              >
+                <input
+                  type="radio"
+                  onChange={handleOptionChange}
+                  name="option"
+                  value={"candidate"}
+                  hidden
+                />
+                Candidate
+              </label>
+              <label
+                className={
+                  selected === "employer"
+                    ? "py-[1rem] bg-green-100 text-center rounded-xl cursor-pointer text-primary"
+                    : "py-[1rem] bg-gray-100 text-center rounded-xl cursor-pointer "
+                }
+              >
+                <input
+                  onChange={handleOptionChange}
+                  type="radio"
+                  name="option"
+                  value={"employer"}
+                  hidden
+                />
+                Employer{" "}
+              </label>
+            </div>
             <div>
               <label className="font-bold">Email</label>
               <input
@@ -108,4 +163,4 @@ function ModalLogin() {
   );
 }
 
-export default ModalLogin
+export default ModalLogin;

@@ -4,6 +4,7 @@ import conectarDB from "./config/db.js";
 import cors from "cors";
 
 import candidateRoutes from "./routes/candidateRoutes.js";
+import employerRoutes from "./routes/employerRoutes.js";
 import foreignRoutes from "./routes/foreignRoutes.js";
 import networkRoutes from "./routes/networkRoutes.js";
 import { ingresarDatos } from "./config/seed.js";
@@ -38,6 +39,7 @@ app.use(cors(corsOptions))
 app.use("/api/candidates", candidateRoutes);
 app.use("/api/foreign", foreignRoutes);
 app.use("/api/network", networkRoutes);
+app.use("/api/employers", employerRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Escuchando en puerto ${process.env.PORT}`);
