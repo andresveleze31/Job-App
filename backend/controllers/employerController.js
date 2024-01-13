@@ -49,4 +49,44 @@ async function profile(req, res){
     res.json(req.employer)
 }
 
-export { registerEmployer, loginEmployer, profile };
+async function getProfile(req, res) {
+
+    const { id } = req.params;
+
+    try {
+      const employer = await Employer.findOne({ _id: id });
+
+      if (!employer) {
+        return res.status(404).json({ error: "Employer Not Found" });
+      }
+
+      return res.json(employer);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+}
+
+async function updateProfile(req, res){
+    const { id } = req.params;
+
+    try {
+      const profileUpdated = await Employer.findOneAndUpdate(
+        { _id: id },
+        {
+          ...req.body,
+        }
+      );
+
+      if (!profileUpdated) {
+        return res.status(404).json({ error: "Employer Not Found" });
+      }
+
+      return res.json(profileUpdated);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+}
+
+
+
+export { registerEmployer, loginEmployer, profile, getProfile, updateProfile };

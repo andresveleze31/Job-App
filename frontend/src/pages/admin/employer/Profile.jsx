@@ -3,27 +3,21 @@ import Map from "../../../components/Map";
 import axios from "axios";
 import useJobtex from "../../../hooks/useJobtex";
 import { toast } from "react-hot-toast";
-import useAuthCandidate from "../../../hooks/useAuthCandidate";
+import useAuthEmployer from "../../../hooks/useAuthEmployer";
 
 function Profile() {
-  const { authCandidate, tokenC } = useAuthCandidate();
+  const { authEmployer, tokenE } = useAuthEmployer();
 
   const [networksNumber, setNetworksNumber] = useState(0);
 
   const [file, setFile] = useState(); //photo
   const [imageURL, setImageURL] = useState(""); //URL Image
   const [fullName, setFullname] = useState(""); //fullname
-  const [birth, setBirth] = useState(0); //birth
   const [number, setNumber] = useState(0); //number
-  const [genderId, setGenderId] = useState(""); //Gender -- id???
-  const [age, setAge] = useState(0);
-  const [salary, setSalary] = useState(0);
-  const [salaryTypeId, setSalaryTypeId] = useState(""); //--id??
-  const [qualificationId, setQualificationId] = useState(""); //--id??
-  const [experience, setExperience] = useState(0);
+  const [foundedDate, setFoundedDate] = useState(0); //founder date
+  const [companySize, setCompanySize] = useState(0);
   const [categorieId, setCategorieId] = useState("");
-  const [languageId, setLanguageId] = useState("");
-  const [jobtitle, setJobtitle] = useState("");
+  const [website, setWebsite] = useState("");
   const [aboutme, setAboutMe] = useState("");
   const [address, setAddress] = useState("");
   const [locationId, setLocationId] = useState("");
@@ -35,11 +29,11 @@ function Profile() {
   const [cargando, setCargando] = useState(true);
 
   const [networksArray, setNetworksArray] = useState([
-    { social: "", url: "" },
-    { social: "", url: "" },
-    { social: "", url: "" },
-    { social: "", url: "" },
-    { social: "", url: "" },
+    { social_id: "", url: "" },
+    { social_id: "", url: "" },
+    { social_id: "", url: "" },
+    { social_id: "", url: "" },
+    { social_id: "", url: "" },
   ]);
 
   //Llenar los campos...
@@ -47,48 +41,46 @@ function Profile() {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${tokenC}`,
+        Authorization: `Bearer ${tokenE}`,
       },
     };
 
     const { data } = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/candidates/get-profile/${
-        authCandidate._id
+      `${import.meta.env.VITE_BACKEND_URL}/api/employers/get-profile/${
+        authEmployer._id
       }`,
       config
     );
 
     //Set Normal Data
     setFullname(data.fullname);
-    setBirth(data.birth);
     setNumber(data.number);
     setEmailId(data.email);
-    setGenderId(data.gender_id);
-    setAge(data.age);
-    setSalary(data.salary);
-    setSalaryTypeId(data.salaryType);
-    setQualificationId(data.qualification_id);
-    setExperience(data.experiencetime);
+    setFoundedDate(data.founded);
     setCategorieId(data.categorie_id);
-    setLanguageId(data.language_id);
-    setJobtitle(data.jobtitle);
     setAboutMe(data.aboutme);
     setAddress(data.address);
     setVideoURL(data.video);
     setLocationId(data.location_id);
+    setWebsite(data.website);
     setLatitude(data.lat);
     setLongitude(data.long);
     setImageURL(data.photo);
+    setCompanySize(data.size);
 
     //Set the array,
     ///get-candidate-networks/:id
     const candidateNet = await axios.get(
-      `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/network//get-candidate-networks/${authCandidate._id}`
+      `${import.meta.env.VITE_BACKEND_URL}/api/network/get-employer-networks/${
+        authEmployer._id
+      }`
     );
-    setNetworksNumber(candidateNet.data.length);
-    setNetworksArray(candidateNet.data);
+
+    if (candidateNet.data.length > 0) {
+      setNetworksNumber(candidateNet.data.length);
+      setNetworksArray(candidateNet.data);
+    }
+
     setCargando(false);
 
     console.log(data);
@@ -103,7 +95,7 @@ function Profile() {
       const updatedNetworksArray = [...prevState];
       updatedNetworksArray[index] = {
         ...updatedNetworksArray[index],
-        social: e.target.value,
+        social_id: e.target.value,
       };
       console.log(updatedNetworksArray);
       return updatedNetworksArray;
@@ -124,23 +116,16 @@ function Profile() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(authCandidate);
 
     if (
       [
         file,
         fullName,
-        birth,
         number,
-        genderId,
-        age,
-        salary,
-        salaryTypeId,
-        qualificationId,
-        experience,
         categorieId,
-        languageId,
-        jobtitle,
+        foundedDate,
+        companySize,
+        website,
         address,
         locationId,
         longitude,
@@ -153,54 +138,52 @@ function Profile() {
       return toast.error("All Fields are Required");
     }
 
-    if (!file.name) {
-      return toast.error("Image Not Found");
+    if (file === undefined && imageURL === "") {
+      return toast.error("Image Not Loaded");
     }
-
-    console.log(networksArray.length);
 
     let networksIncomplete = false;
 
     networksArray.forEach((net) => {
-      if (networksNumber >= 1 && (!net.social || !net.url)) {
+      if (networksNumber >= 1 && (!net.social_id || !net.url)) {
         networksIncomplete = true;
       }
     });
 
     try {
-      //Guardar Imagen.
-      const formdata = new FormData();
-      formdata.append("file", file);
-      const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/foreign/upload`,
-        formdata
-      );
+      console.log("Imagen: " + imageURL);
+      if (!imageURL) {
+        console.log("Imagen Creada");
+        //Guardar Imagen.
+        const formdata = new FormData();
+        formdata.append("file", file);
+        const res = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/foreign/upload`,
+          formdata
+        );
+
+        setImageURL(res.data);
+      }
 
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenC}`,
+          Authorization: `Bearer ${tokenE}`,
         },
       };
 
       const { data } = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/candidates/profile-update/${
-          authCandidate._id
+        `${import.meta.env.VITE_BACKEND_URL}/api/employers/update-profile/${
+          authEmployer._id
         }`,
         {
-          photo: res.data,
+          photo: imageURL,
           fullname: fullName,
-          birth,
           number,
-          gender_id: genderId,
-          age,
-          salary,
-          salaryType: salaryTypeId,
-          qualification_id: qualificationId,
-          experiencetime: experience,
+          founded: foundedDate,
           categorie_id: categorieId,
-          language_id: languageId,
-          jobtitle,
+          size: companySize,
+          website,
           aboutme,
           address,
           location_id: locationId,
@@ -212,20 +195,25 @@ function Profile() {
         config
       );
 
-      console.log(networksNumber);
-
       if (networksNumber >= 1) {
-        networksArray.forEach(async (net) => {
+        networksArray.forEach(async (net, index) => {
+
+          if(index > networksNumber - 1){
+            return toast.success("Profile Successfully Updated");
+          }
+
           const networkExist = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/api/network/get-network`,
+            `${
+              import.meta.env.VITE_BACKEND_URL
+            }/api/network/get-network-employer`,
             {
               params: {
-                social_id: net.social,
-                candidate_id: authCandidate._id,
+                social_id: net.social_id,
+                employer_id: authEmployer._id,
               },
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${tokenC}`,
+                Authorization: `Bearer ${tokenE}`,
               },
             }
           );
@@ -234,9 +222,9 @@ function Profile() {
             console.log("Actualizando...");
 
             const { data } = await axios.put(
-              `${import.meta.env.VITE_BACKEND_URL}/api/network/update-network/${
-                networkExist.data[0]._id
-              }`,
+              `${
+                import.meta.env.VITE_BACKEND_URL
+              }/api/network/update-network-emp/${networkExist.data[0]._id}`,
               {
                 url: net.url, // Include the updated data in the request body
               },
@@ -247,11 +235,13 @@ function Profile() {
             console.log("Creando...");
 
             const { data } = await axios.post(
-              `${import.meta.env.VITE_BACKEND_URL}/api/network/create-network`,
+              `${
+                import.meta.env.VITE_BACKEND_URL
+              }/api/network/create-network-employer`,
               {
-                social_id: net.social,
+                social_id: net.social_id,
                 url: net.url,
-                candidate_id: authCandidate._id,
+                employer_id: authEmployer._id,
               },
               config
             );
@@ -266,20 +256,11 @@ function Profile() {
     }
 
     toast.success("Profile Successfully Updated");
-    getProfile();
+    //getProfile();
     window.scrollTo(0, 0);
   }
 
-  const {
-    genders,
-    salaryTypes,
-    qualifications,
-    categories,
-    languages,
-    locations,
-    charging,
-    socials,
-  } = useJobtex();
+  const { categories, locations, charging, socials } = useJobtex();
 
   return (
     <main className="mb-[5rem] ">
@@ -343,7 +324,6 @@ function Profile() {
               />
             </div>
 
-
             <div className="flex flex-col ">
               <label
                 className="font-semibold mb-[1rem] text-[1.4rem]"
@@ -391,9 +371,9 @@ function Profile() {
               </label>
               <input
                 onChange={(e) => {
-                  setExperience(Number(e.target.value));
+                  setFoundedDate(Number(e.target.value));
                 }}
-                value={experience}
+                value={foundedDate}
                 id="experience"
                 placeholder="Enter Your Years Of Experience"
                 className="bg-gray-100 w-full py-[1.3rem] px-[2rem] border rounded-lg focus:outline-primary  transition-all duration-300 focus:bg-white"
@@ -410,9 +390,9 @@ function Profile() {
               </label>
               <input
                 onChange={(e) => {
-                  setExperience(Number(e.target.value));
+                  setCompanySize(Number(e.target.value));
                 }}
-                value={experience}
+                value={companySize}
                 id="experience"
                 placeholder="Enter Your Years Of Experience"
                 className="bg-gray-100 w-full py-[1.3rem] px-[2rem] border rounded-lg focus:outline-primary  transition-all duration-300 focus:bg-white"
@@ -454,8 +434,6 @@ function Profile() {
               </select>
             </div>
 
-            
-
             <div className="flex flex-col ">
               <label
                 className="font-semibold m-0 mb-[1rem] text-[1.4rem]"
@@ -465,9 +443,9 @@ function Profile() {
               </label>
               <input
                 onChange={(e) => {
-                  setJobtitle(e.target.value);
+                  setWebsite(e.target.value);
                 }}
-                value={jobtitle}
+                value={website}
                 placeholder="Your Job Title"
                 id="jobtitle"
                 className="bg-gray-100 w-full py-[1.3rem] px-[2rem] border rounded-lg focus:outline-primary  transition-all duration-300 focus:bg-white"
