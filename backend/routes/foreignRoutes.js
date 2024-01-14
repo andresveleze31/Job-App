@@ -1,5 +1,5 @@
 import express from "express";
-import { getCategories, getGenders, getLanguages, getLocations, getQualification, getSalaryType, getSocialNetworks, upload, uploadFiles } from "../controllers/foreignController.js";
+import { getCategories, getGenders, getIndustries, getJobTypes, getLanguages, getLevels, getLocations, getQualification, getSalaryType, getSocialNetworks, upload, uploadFiles } from "../controllers/foreignController.js";
 
 
 const router = express.Router();
@@ -12,6 +12,9 @@ router.get("/categories", getCategories);
 router.get("/languages", getLanguages);
 router.get("/locations", getLocations);
 router.get("/socials", getSocialNetworks);
+router.get("/job-types", getJobTypes);
+router.get("/industries", getIndustries);
+router.get("/levels", getLevels);
 router.post("/upload", upload.single("file") , uploadFiles);
 
 

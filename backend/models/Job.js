@@ -7,7 +7,7 @@ const jobSchema = mongoose.Schema(
     description: { type: String, required: true },
     categorie_id: { type: mongoose.Schema.Types.ObjectId, ref: "Categorie" },
     type_id: { type: mongoose.Schema.Types.ObjectId, ref: "TypeJob" },
-    published: { type: String, required: true },
+    published: { type: String },
     deadline: { type: String, required: true },
     salaryType: { type: mongoose.Schema.Types.ObjectId, ref: "SalaryType" },
     minSalary: { type: Number },

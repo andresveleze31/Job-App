@@ -7,6 +7,9 @@ import Qualification from "../models/Qualification.js";
 import SalaryType from "../models/SalaryType.js";
 import Social from "../models/Social.js";
 import multer from "multer";
+import TypeJob from "../models/TypeJob.js";
+import Industry from "../models/Industry.js";
+import CarrerLevel from "../models/CarrerLevel.js";
 
 
 async function getGenders(req, res){
@@ -73,6 +76,33 @@ async function getSocialNetworks(req, res){
     }
 }
 
+async function getJobTypes(req, res){
+    try {
+        const jobTypes = await TypeJob.find();
+        res.json(jobTypes);
+    } catch (error) {
+        res.json(error);
+    }
+}
+
+async function getIndustries(req, res){
+    try {
+        const industries = await Industry.find();
+        res.json(industries);
+    } catch (error) {
+        res.json(error);
+    }
+}
+
+async function getLevels(req, res){
+    try {
+        const levels = await CarrerLevel.find();
+        res.json(levels);
+    } catch (error) {
+        res.json(error);
+    }
+}
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "public/uploads/")
@@ -102,6 +132,9 @@ export {
   getCategories,
   getLocations,
   getSocialNetworks,
+  getJobTypes,
+  getIndustries,
+  getLevels,
   uploadFiles,
   upload
 };

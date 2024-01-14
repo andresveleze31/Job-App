@@ -14,6 +14,9 @@ const JobtexProvider = ({ children }) => {
       const [languages, setLanguages] = useState([]);
       const [locations, setLocations] = useState([]);
       const [socials, setSocials] = useState([]);
+      const [jobTypes, setJobTypes] = useState([]);
+      const [industries, setIndustries] = useState([]);
+      const [levels, setLeveles] = useState([]);
 
       const [charging, setCharging] = useState(true);
 
@@ -46,6 +49,18 @@ const JobtexProvider = ({ children }) => {
           import.meta.env.VITE_BACKEND_URL
         }/api/foreign/socials`;
 
+        const urlJobTypes = `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/foreign/job-types`;
+
+        const urlIndustries = `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/foreign/industries`;
+
+        const urlLeveles = `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/foreign/levels`;
+
         async function getForeign() {
           const [
             dataGenders,
@@ -54,7 +69,10 @@ const JobtexProvider = ({ children }) => {
             dataCat,
             dataLang,
             dataLoc,
-            dataSocials
+            dataSocials,
+            dataJobTypes,
+            dataIndustries,
+            dataLevels
           ] = await axios.all([
             axios.get(urlGenders),
             axios.get(urlSalaryType),
@@ -63,6 +81,9 @@ const JobtexProvider = ({ children }) => {
             axios.get(urlLanguages),
             axios.get(urlLocations),
             axios.get(urlSocials),
+            axios.get(urlJobTypes),
+            axios.get(urlIndustries),
+            axios.get(urlLeveles)
           ]);
 
           setGenders(dataGenders.data);
@@ -73,8 +94,12 @@ const JobtexProvider = ({ children }) => {
           setLocations(dataLoc.data);
           setCharging(false);
           setSocials(dataSocials.data);
+          setJobTypes(dataJobTypes.data);
+          setIndustries(dataIndustries.data);
+          setLeveles(dataLevels.data);
         }
         getForeign();
+
       }, []);
 
       async function getProfile(){
@@ -98,7 +123,10 @@ const JobtexProvider = ({ children }) => {
           languages,
           locations,
           charging,
-          socials
+          socials,
+          levels,
+          industries,
+          jobTypes
         }}
       >
         {children}
