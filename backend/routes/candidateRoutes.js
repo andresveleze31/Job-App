@@ -1,5 +1,5 @@
 import express from "express";
-import { createEducation, createExperience, getEducation, getExperience, getProfile, loginCandidate, profile, registerCandidate, updateEducation, updateExperience, updateProfile } from "../controllers/candidateController.js";
+import { createEducation, createExperience, getCandidates, getEducation, getExperience, getProfile, loginCandidate, profile, registerCandidate, updateEducation, updateExperience, updateProfile } from "../controllers/candidateController.js";
 import checkAuthCandidate from "../middleware/checkAuthCandidate.js";
 import multer from "multer";
 import path from "path";
@@ -22,5 +22,6 @@ router.put("/update-experience/:id", checkAuthCandidate, updateExperience);
 
 router.put("/profile-update/:id",checkAuthCandidate ,updateProfile );
 
+router.get("/get-candidates", getCandidates);
 
 export default router;

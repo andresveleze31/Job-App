@@ -2,8 +2,11 @@ import React from "react";
 import FormularioCandidates from "../components/candidates/FormularioCandidates";
 import BannerNav from "../components/BannerNav";
 import Candidate from "../components/Candidate";
+import useJobtex from "../hooks/useJobtex";
 
 function Candidates() {
+
+  const {candidates} = useJobtex();
 
     
   return (
@@ -13,15 +16,9 @@ function Candidates() {
 
       <div className="contenedor mb-[10rem] ">
         <div className="grid grid-cols-3 gap-[4rem]">
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
-        <Candidate candidate={"Hola"}  />
+          {candidates.map(cand => {
+            return <Candidate candidate={cand} />
+          })}
 
         </div>
 

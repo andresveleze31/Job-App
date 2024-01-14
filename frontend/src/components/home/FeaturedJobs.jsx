@@ -1,8 +1,14 @@
 import React from "react";
 import Job from "../Job";
 import { Link } from "react-router-dom";
+import useJobtex from "../../hooks/useJobtex";
 
 function FeaturedJobs() {
+
+  const {jobs} = useJobtex();
+
+  
+
   return (
     <main className="contenedor mt-[7rem] ">
       <div className="text-center">
@@ -13,12 +19,10 @@ function FeaturedJobs() {
       </div>
 
       <div className="mt-[5rem] grid grid-cols-2 gap-[4rem]">
-        <Job job="Hola" />
-        <Job job="Hola" />
-        <Job job="Hola" />
-        <Job job="Hola" />
-        <Job job="Hola" />
-        <Job job="Hola" />
+        {jobs.map(job => {
+          return <Job job={job} />
+        })}
+
       </div>
 
       <div className="flex justify-center mt-[5rem] ">

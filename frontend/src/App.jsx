@@ -30,6 +30,7 @@ import { AuthCandidateProvider } from "./context/AuthCandidateProvider";
 import { AuthEmployerProvider } from "./context/AuthEmployerProvider";
 import ProtectedCandidate from "./layouts/ProtectedCandidate";
 import ProtectedEmployer from "./layouts/ProtectedEmployer";
+import EditJob from "./pages/admin/employer/EditJob";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
                   <Route path="profile" element={<Profile />} />
                   <Route path="jobs" element={<EmployerJobs />} />
                   <Route path="create-job" element={<NewJob />} />
+                  <Route path="edit-job" element={<EditJob />} />
                   <Route path="job-applicants" element={<Applicants />} />
                   <Route path="favorites" element={<Favorites />} />
                   <Route path="messages" element={<Messages />} />

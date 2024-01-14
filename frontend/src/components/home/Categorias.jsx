@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Categoria from "./Categoria";
 import { Link } from "react-router-dom";
+import useJobtex from "../../hooks/useJobtex";
 
 function Categorias() {
+
+  const {categories} = useJobtex();
+
   return (
     <div className="contenedor mt-[5rem] ">
       <div className="flex justify-between items-center">
@@ -16,16 +20,10 @@ function Categorias() {
       </div>
 
       <div className="grid  mt-[5rem] grid-cols-5 gap-[2rem]">
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
-        <Categoria categoria={"Hola"} />
+        {categories.map(categorie => {
+          return <Categoria key={categorie._id} categoria={categorie} />
+        })}
+
       </div>
     </div>
   );

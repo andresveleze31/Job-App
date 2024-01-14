@@ -64,7 +64,7 @@ function EmployerJobs() {
         ) : (
           <div>
             {jobsArray.map(job => {
-              return <JobEmployer job={job} />
+              return <JobEmployer job={job} jobsArray={jobsArray} setJobsArray={setJobsArray} />;
             })}
           </div>
         )}

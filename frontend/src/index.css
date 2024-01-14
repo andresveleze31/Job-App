@@ -43,6 +43,15 @@
   h3 {
     font-size: 2rem;
   }
+
+  ol,
+  ul,
+  menu {
+    list-style: auto;
+    margin-left: 50px;
+    padding: 5px;
+
+  }
 }
 
 @layer components {

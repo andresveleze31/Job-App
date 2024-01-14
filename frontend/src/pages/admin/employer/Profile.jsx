@@ -25,6 +25,7 @@ function Profile() {
   const [latitude, setLatitude] = useState(0);
   const [videoURL, setVideoURL] = useState("");
   const [emailId, setEmailId] = useState("");
+  const [imageReplace, setImageReplace] = useState("");
 
   const [cargando, setCargando] = useState(true);
 
@@ -66,6 +67,7 @@ function Profile() {
     setLatitude(data.lat);
     setLongitude(data.long);
     setImageURL(data.photo);
+    setImageReplace(data.photo);
     setCompanySize(data.size);
 
     //Set the array,
@@ -152,7 +154,7 @@ function Profile() {
 
     try {
       console.log("Imagen: " + imageURL);
-      if (!imageURL) {
+      if (!imageURL || imageURL !== imageReplace) {
         console.log("Imagen Creada");
         //Guardar Imagen.
         const formdata = new FormData();
@@ -163,6 +165,7 @@ function Profile() {
         );
 
         setImageURL(res.data);
+        console.log(imageURL);
       }
 
       const config = {
@@ -294,6 +297,7 @@ function Profile() {
             <input
               onChange={(e) => {
                 setFile(e.target.files[0]);
+                setImageReplace(e.target.files[0].name);
               }}
               name="photo"
               className="hidden"

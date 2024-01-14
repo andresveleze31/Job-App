@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBarHome from "../components/NavBarHome";
 import { Link } from "react-router-dom";
 import Categorias from "../components/home/Categorias";
@@ -13,7 +13,8 @@ import ModalLogin from "../components/ModalLogin";
 
 function Home() {
 
-  const {login} = useJobtex();
+  const {login, categories, jobs} = useJobtex();
+  console.log(jobs);
 
   return (
     <div>

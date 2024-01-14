@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Candidate({ candidate }) {
+
+  console.log(candidate)
   return (
     <div className="border rounded-xl p-[2rem] ">
       <div className="grid grid-cols-3">
@@ -13,7 +15,9 @@ function Candidate({ candidate }) {
         <div className="flex justify-center">
           <img
             className="rounded-full w-[8rem] h-[8rem] "
-            src="../public/images/candidate_photo.jpg"
+            src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${
+              candidate.photo
+            }`}
             alt="Candidate Photo"
           />
         </div>
@@ -30,9 +34,9 @@ function Candidate({ candidate }) {
 
       <div className=" flex flex-col items-center mt-[2rem] ">
         <p className="text-[1.4rem] text-center font-bold text-primary ">
-          Developer Web
+          {candidate.jobtitle}
         </p>
-        <h3 className="font-bold mb-3 text-center">Brooklyn Simmons</h3>
+        <h3 className="font-bold mb-3 text-center">{candidate.fullname}</h3>
         <div className="flex gap-[1rem] ">
           <div className="flex gap-[.5rem] items-center ">
             <img
@@ -40,7 +44,7 @@ function Candidate({ candidate }) {
               src="../public/icons/icon_ubicacion_gray.png"
               alt="Icon Location"
             />
-            <p className="text-[1.4rem] text-customGray">Manhattan Ave</p>
+            <p className="text-[1.4rem] text-customGray">{candidate.address}</p>
           </div>
           <div className="flex gap-[.5rem] items-center ">
             <img
@@ -48,18 +52,19 @@ function Candidate({ candidate }) {
               src="../public/icons/icon_money.png"
               alt="Icon Location"
             />
-            <p className="text-[1.4rem] text-customGray">$1200 / month</p>
+            <p className="text-[1.4rem] text-customGray">
+              ${candidate.salary} / {candidate.salaryType.salaryType}
+            </p>
           </div>
         </div>
         <div className="flex mt-[2rem]  gap-[1rem] ">
           <Link className="bg-slate-200 hover:text-primary transition-all duration-300 rounded-full text-[1.2rem] px-[1rem] py-[0.5rem]  ">
-            Full Time
-          </Link>
-          <Link className="bg-slate-200 hover:text-primary transition-all duration-300 rounded-full text-[1.2rem] px-[1rem] py-[0.5rem]  ">
-            Full Time
+            {candidate.categorie_id.categorie}
           </Link>
         </div>
-        <Link className="text-white mt-[2rem] font-semibold bg-primary text-center py-[1rem] w-full px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 ">View Profile</Link>
+        <Link className="text-white mt-[2rem] font-semibold bg-primary text-center py-[1rem] w-full px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 ">
+          View Profile
+        </Link>
       </div>
     </div>
   );

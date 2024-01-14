@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Employer from "../Employer";
+import useJobtex from "../../hooks/useJobtex";
 
 function TopEmployers() {
+
+  const {employers} = useJobtex();
+
   return (
     <div className="contenedor my-[10rem] ">
       <div className="flex justify-between items-center">
@@ -22,16 +26,9 @@ function TopEmployers() {
         </Link>
       </div>
       <div className="grid mt-[5rem] grid-cols-3 gap-[2rem] ">
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-        <Employer employer={"Hola"} />
-
+        {employers.map(emp => {
+          return <Employer employer={emp} />
+        })}
 
       </div>
     </div>

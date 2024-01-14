@@ -2,8 +2,12 @@ import React from "react";
 import BannerNav from "../components/BannerNav";
 import FormularioEmployers from "../components/employers/FormularioEmployers";
 import Employer from "../components/Employer";
+import useJobtex from "../hooks/useJobtex";
 
 function Employers() {
+
+  const {employers} = useJobtex();
+
   return (
     <main>
       <BannerNav namePage={"Employers"} />
@@ -11,15 +15,9 @@ function Employers() {
 
       <div className="contenedor mb-[10rem] ">
         <div className="grid grid-cols-3 gap-[2rem]">
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
-          <Employer employer={"Hola"} />
+          {employers.map((emp) => {
+            return <Employer employer={emp} />;
+          })}
         </div>
       </div>
     </main>

@@ -1,12 +1,49 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import JobInformation from "../components/jobs/JobInformation";
 import JobAside from "../components/jobs/JobAside";
 import EmployerAside from "../components/employers/EmployerAside";
 import Map from "../components/Map";
 import ContactFormEmployer from "../components/employers/ContactFormEmployer";
+import axios from "axios";
 
 function JobDetails() {
+  const { id } = useParams();
+  const [job, setJob] = useState({});
+  const [cargando, setCargando] = useState(true);
+  const [employer, setEmployer] = useState({});
+
+  useEffect(() => {
+    async function getJob() {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/jobs/get-general-job/${id}`
+      );
+      setJob(data);
+      setCargando(false);
+      console.log(data);
+
+      try {
+        const employer = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/employers/get-employer/${data.employer_id._id}`
+        );
+        setEmployer(employer.data);
+        console.log(employer);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getJob();
+  }, []);
+
+  // Crear un objeto Date con la fecha de MongoDB
+  const dateObject = new Date(job.createdAt);
+
+  // Configurar las opciones de formato
+  const options = { year: "numeric", month: "long", day: "numeric" };
+
+  // Formatear la fecha según las opciones
+  const formattedDate = dateObject.toLocaleDateString("en-US", options);
+
   return (
     <main>
       <header className="hero_employer h-[40rem]"></header>
@@ -17,14 +54,20 @@ function JobDetails() {
             <div className="flex  items-center gap-[2rem]">
               <img
                 className="w-[10rem] h-[10rem] "
-                src="../../public/images/employers_example.png"
+                src={
+                  cargando
+                    ? "No Image"
+                    : `${import.meta.env.VITE_BACKEND_URL}/uploads/${
+                        job.employer_id.photo
+                      }`
+                }
                 alt="Logo Employer"
               />
               <div>
                 <Link className="text-[1.4rem] text-primary hover:underline font-bold ">
-                  Aprico Ltd
+                  {cargando ? "Jobtex Enterprise" : job.employer_id.fullname}
                 </Link>
-                <h3 className="font-bold mb-3">Software Engineer</h3>
+                <h3 className="font-bold mb-3">{job.title}</h3>
                 <div className="flex mb-[1rem] gap-[1rem] ">
                   <div className="flex gap-[.5rem] items-center ">
                     <img
@@ -33,7 +76,7 @@ function JobDetails() {
                       alt="Icon Location"
                     />
                     <p className="text-[1.4rem] text-customGray">
-                      Manhattan Ave
+                      {job.address}
                     </p>
                   </div>
                   <div className="flex gap-[.5rem] items-center ">
@@ -43,12 +86,12 @@ function JobDetails() {
                       alt="Icon Location"
                     />
                     <p className="text-[1.4rem] text-customGray">
-                      June 20, 2023
+                      {formattedDate}
                     </p>
                   </div>
                 </div>
                 <Link className="bg-slate-200 hover:text-primary transition-all duration-300 rounded-full text-[1.2rem] px-[1rem] py-[0.5rem]  ">
-                  Full Time
+                  {cargando ? "Fulltime" : job.type_id.type}
                 </Link>
               </div>
             </div>
@@ -70,7 +113,7 @@ function JobDetails() {
                 <span className="text-red-600 font-normal">
                   Deadline Date:{" "}
                 </span>{" "}
-                June 14, 2030
+                {job.deadline}
               </p>
               <div className="flex justify-end mt-[1rem]">
                 <img
@@ -79,20 +122,22 @@ function JobDetails() {
                   alt="Icon Money"
                 />
                 <p className="font-bold">
-                  $750 - $800{" "}
+                  ${job.minSalary} - ${job.maxSalary}{" "}
                   <span className="font-normal text-[1.4rem] text-customGray ">
-                    / money
+                    / {cargando ? "money" : job.salaryType.salaryType}
                   </span>
                 </p>
               </div>
             </div>
           </div>
-          <JobInformation />
+          <JobInformation job={job} />
         </div>
         <div className="flex flex-col gap-[3rem] ">
-          <Map />
-          <JobAside />
-          <EmployerAside />
+          {Object.keys(job).length > 0 && (
+            <Map lat={Number(job.lat)} long={Number(job.long)} />
+          )}
+          <JobAside job={job} />
+          <EmployerAside employer={employer} />
           <ContactFormEmployer />
         </div>
       </div>

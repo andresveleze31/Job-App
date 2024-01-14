@@ -5,35 +5,17 @@ import Job from "../Job";
 import SectionComment from "../SectionComment";
 import FormularioReview from "../FormularioReview";
 
-function EmployerInformation() {
+function EmployerInformation({employer}) {
   return (
     <main>
       <div>
         <h3 className="font-bold">About Company</h3>
-        <p className="text-[1.6rem] text-customGray ">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo
-          cupiditate tempora qui quam ad magnam vero explicabo soluta, aperiam,
-          totam asperiores magni ut commodi, reprehenderit ex suscipit quaerat
-          temporibus dolore. Lorem ipsum dolor, sit amet consectetur adipisicing
-          elit. Est quae repudiandae reprehenderit atque quaerat pariatur
-          similique aut ab exercitationem eligendi voluptatem totam odio quas,
-          explicabo dolores tempore velit? Impedit, soluta!
-        </p>
-        <br />
-        <p className="text-[1.6rem] text-customGray ">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo
-          cupiditate tempora qui quam ad magnam vero explicabo soluta, aperiam,
-          totam asperiores magni ut commodi, reprehenderit ex suscipit quaerat
-          temporibus dolore. Lorem ipsum dolor, sit amet consectetur adipisicing
-          elit. Est quae repudiandae reprehenderit atque quaerat pariatur
-          similique aut ab exercitationem eligendi voluptatem totam odio quas,
-          explicabo dolores tempore velit? Impedit, soluta!
-        </p>
+        {employer.aboutme}
       </div>
 
       <div className="mt-[4rem]">
         <h3 className="font-bold">Video</h3>
-        <Video />
+        <Video url={employer.video} />
       </div>
       <div className="mt-[4rem]">
         <div className="flex justify-between items-center mb-[3rem] ">
@@ -42,10 +24,6 @@ function EmployerInformation() {
         </div>
 
         <div className="grid grid-cols-1 gap-[2rem]">
-            <Job />
-            <Job />
-            <Job />
-
         </div>
       </div>
 

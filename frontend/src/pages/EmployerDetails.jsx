@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EmployerInformation from "../components/employers/EmployerInformation";
 import EmployerAside from "../components/employers/EmployerAside";
 import ContactFormEmployer from "../components/employers/ContactFormEmployer";
 import Map from "../components/Map";
+import axios from "axios";
 
 function EmployerDetails() {
   const { id } = useParams();
+
+  const [employer, setEmployer] = useState({})
+
+  useEffect(() => {
+    async function getEmployer(){
+      try {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/employers/get-employer/${id}`
+        );
+        setEmployer(data);
+        console.log(data)
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+    getEmployer();
+  },[] )
 
   return (
     <div>
@@ -52,11 +71,13 @@ function EmployerDetails() {
         </div>
       </header>
       <div className="mt-[14rem] mb-[4rem] contenedor grid grid-cols-[2fr,1fr] gap-[7rem] ">
-        <EmployerInformation />
+        <EmployerInformation employer={employer} />
 
         <div className="flex flex-col gap-[3rem] ">
-          <Map />
-          <EmployerAside />
+          {Object.keys(employer).length > 0 && (
+            <Map lat={employer.lat} long={employer.long} />
+          )}
+          <EmployerAside employer={employer} />
           <ContactFormEmployer />
         </div>
       </div>

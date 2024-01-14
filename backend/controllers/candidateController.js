@@ -67,6 +67,22 @@ async function getProfile(req, res) {
   }
 }
 
+async function getCandidates(req, res) {
+  try {
+    const candidates = await Candidate.find()
+      .populate("location_id")
+      .populate("categorie_id")
+      .populate("gender_id")
+      .populate("language_id")
+      .populate("qualification_id")
+      .populate("salaryType")
+      .sort({ createdAt: -1 });
+    res.json(candidates);
+  } catch (error) {
+    return res.status(403).json({ msg: error.message });
+  }
+}
+
 async function updateProfile(req, res) {
   const { id } = req.params;
   console.log(req.body.cv);
@@ -110,7 +126,6 @@ async function createExperience(req, res) {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-
 }
 
 async function createEducation(req, res) {
@@ -131,7 +146,7 @@ async function createEducation(req, res) {
   }
 }
 
-async function getExperience(req, res){
+async function getExperience(req, res) {
   const { id } = req.params;
 
   try {
@@ -141,7 +156,6 @@ async function getExperience(req, res){
     res.status(400).json({ error: error.message });
   }
 }
-
 
 async function getEducation(req, res) {
   const { id } = req.params;
@@ -154,25 +168,25 @@ async function getEducation(req, res) {
   }
 }
 
-async function updateExperience(req, res){
+async function updateExperience(req, res) {
   const { id } = req.params;
 
-    try {
-      const experienceUpdated = await Experience.findOneAndUpdate(
-        { _id: id },
-        {
-          ...req.body,
-        }
-      );
-
-      if (!experienceUpdated) {
-        return res.status(404).json({ error: "Experience Not Found" });
+  try {
+    const experienceUpdated = await Experience.findOneAndUpdate(
+      { _id: id },
+      {
+        ...req.body,
       }
+    );
 
-      return res.json(experienceUpdated);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+    if (!experienceUpdated) {
+      return res.status(404).json({ error: "Experience Not Found" });
     }
+
+    return res.json(experienceUpdated);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 }
 
 async function updateEducation(req, res) {
@@ -207,5 +221,6 @@ export {
   updateEducation,
   createExperience,
   updateExperience,
-  getExperience
+  getExperience,
+  getCandidates,
 };
