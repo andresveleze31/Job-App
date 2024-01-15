@@ -5,52 +5,37 @@ import Video from "../Video";
 import SectionComment from "../SectionComment";
 import FormularioReview from "../FormularioReview";
 
-function CandidateInformation() {
+function CandidateInformation({ candidate, educations, experiences }) {
   return (
     <main>
       <div>
         <h3 className="font-bold">About Candidate</h3>
-        <p className="text-[1.6rem] text-customGray ">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo
-          cupiditate tempora qui quam ad magnam vero explicabo soluta, aperiam,
-          totam asperiores magni ut commodi, reprehenderit ex suscipit quaerat
-          temporibus dolore. Lorem ipsum dolor, sit amet consectetur adipisicing
-          elit. Est quae repudiandae reprehenderit atque quaerat pariatur
-          similique aut ab exercitationem eligendi voluptatem totam odio quas,
-          explicabo dolores tempore velit? Impedit, soluta!
-        </p>
-        <br />
-        <p className="text-[1.6rem] text-customGray ">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo
-          cupiditate tempora qui quam ad magnam vero explicabo soluta, aperiam,
-          totam asperiores magni ut commodi, reprehenderit ex suscipit quaerat
-          temporibus dolore. Lorem ipsum dolor, sit amet consectetur adipisicing
-          elit. Est quae repudiandae reprehenderit atque quaerat pariatur
-          similique aut ab exercitationem eligendi voluptatem totam odio quas,
-          explicabo dolores tempore velit? Impedit, soluta!
-        </p>
+        {candidate.aboutme}
       </div>
 
       <div className="mt-[4rem] ">
         <h3 className="font-bold">Education</h3>
-        <Education />
-        <Education />
+        {educations.length > 0 &&
+          educations.map((edu) => {
+            return <Education education={edu} />;
+          })}
       </div>
       <div className="mt-[4rem] ">
         <h3 className="font-bold">Experience</h3>
-        <Experience />
-        <Experience />
+        {experiences.length > 0 &&
+          experiences.map((exp) => {
+            return <Experience experience={exp} />;
+          })}
       </div>
       <div className="mt-[4rem] ">
         <h3 className="font-bold">Video</h3>
-        <Video />
+        <Video url={candidate.video} />
       </div>
       <div className="mt-[4rem] ">
         <h3 className="font-bold">2 Comments</h3>
         <SectionComment />
         <FormularioReview />
       </div>
-      
     </main>
   );
 }

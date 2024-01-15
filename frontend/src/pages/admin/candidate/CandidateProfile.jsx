@@ -89,7 +89,11 @@ function CandidateProfile() {
     );
     setNetworksNumber(candidateNet.data.length);
     setNetworksArray(candidateNet.data);
-    setCargando(false);
+
+    console.log(data.lat);
+    if(data.lat !== undefined){
+      setCargando(false);
+    }
 
     console.log(data);
   }

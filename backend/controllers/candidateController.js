@@ -3,6 +3,7 @@ import Education from "../models/Education.js";
 import generarJWT from "../helpers/generarJWT.js";
 import multer from "multer";
 import Experience from "../models/Experience.js";
+import FavoriteJobs from "../models/FavoriteJobs.js";
 
 //Register Candidate
 async function registerCandidate(req, res) {
@@ -83,6 +84,21 @@ async function getCandidates(req, res) {
   }
 }
 
+async function getCandidate(req, res) {
+  try {
+    const candidate = await Candidate.findOne({ _id: req.params.id })
+      .populate("location_id")
+      .populate("categorie_id")
+      .populate("gender_id")
+      .populate("language_id")
+      .populate("qualification_id")
+      .populate("salaryType");
+    res.json(candidate);
+  } catch (error) {
+    return res.status(403).json({ msg: error.message });
+  }
+}
+
 async function updateProfile(req, res) {
   const { id } = req.params;
   console.log(req.body.cv);
@@ -123,6 +139,37 @@ async function createExperience(req, res) {
       candidate_id: id,
     });
     res.json(experience);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+async function createFavoriteJob(req, res) {
+  const { job_id, candidate_id } = req.body;
+
+  try {
+    const favorites = await FavoriteJobs.create({
+      job_id,
+      candidate_id,
+    });
+    res.json(favorites);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+async function getFavoriteJob(req, res) {
+  console.log("Ejecutandose");
+
+  const {job_id, candidate_id} = req.params;
+  console.log(job_id, candidate_id)
+
+  try {
+    const favorite = await FavoriteJobs.findOne({
+      job_id,
+      candidate_id
+    });
+    return res.json(favorite);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -223,4 +270,7 @@ export {
   updateExperience,
   getExperience,
   getCandidates,
+  getCandidate,
+  createFavoriteJob,
+  getFavoriteJob
 };

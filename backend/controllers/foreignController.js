@@ -10,6 +10,7 @@ import multer from "multer";
 import TypeJob from "../models/TypeJob.js";
 import Industry from "../models/Industry.js";
 import CarrerLevel from "../models/CarrerLevel.js";
+import Message from "../models/Message.js";
 
 
 async function getGenders(req, res){
@@ -116,6 +117,30 @@ const upload = multer({
     storage: storage
 })
 
+async function sendMessage(req, res) {
+
+    console.log(
+      req.body.candidate_id,
+      req.body.employer_id,
+      req.body.message,
+      req.body.subject
+    );
+
+    try {
+        const mensaje = await Message.create({
+          candidate_id: req.body.candidate_id,
+          employer_id: req.body.employer_id,
+          message: req.body.message,
+          subject: req.body.subject
+        });
+        res.json(mensaje)
+        
+    } catch (error) {
+        res.json(error);        
+    }
+
+}
+
 async function uploadFiles(req, res){
     try {
         res.send(req.file.filename);
@@ -136,5 +161,6 @@ export {
   getIndustries,
   getLevels,
   uploadFiles,
-  upload
+  upload,
+  sendMessage,
 };

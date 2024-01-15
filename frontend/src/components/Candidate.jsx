@@ -62,7 +62,10 @@ function Candidate({ candidate }) {
             {candidate.categorie_id.categorie}
           </Link>
         </div>
-        <Link className="text-white mt-[2rem] font-semibold bg-primary text-center py-[1rem] w-full px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 ">
+        <Link
+          to={`/candidates/${candidate._id}`}
+          className="text-white mt-[2rem] font-semibold bg-primary text-center py-[1rem] w-full px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 "
+        >
           View Profile
         </Link>
       </div>

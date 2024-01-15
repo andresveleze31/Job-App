@@ -6,12 +6,16 @@ import EmployerAside from "../components/employers/EmployerAside";
 import Map from "../components/Map";
 import ContactFormEmployer from "../components/employers/ContactFormEmployer";
 import axios from "axios";
+import useAuthCandidate from "../hooks/useAuthCandidate";
+import toast from "react-hot-toast";
 
 function JobDetails() {
   const { id } = useParams();
   const [job, setJob] = useState({});
   const [cargando, setCargando] = useState(true);
   const [employer, setEmployer] = useState({});
+
+  const { authCandidate, tokenC } = useAuthCandidate();
 
   useEffect(() => {
     async function getJob() {
@@ -24,7 +28,9 @@ function JobDetails() {
 
       try {
         const employer = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/employers/get-employer/${data.employer_id._id}`
+          `${import.meta.env.VITE_BACKEND_URL}/api/employers/get-employer/${
+            data.employer_id._id
+          }`
         );
         setEmployer(employer.data);
         console.log(employer);
@@ -34,6 +40,61 @@ function JobDetails() {
     }
     getJob();
   }, []);
+
+  async function handleApply(e) {
+    e.preventDefault();
+
+    if (!authCandidate._id) {
+      return toast.error("Create a Candidate Account for applying");
+    }
+
+    //Si ya ha aplicado... No Permitir.
+
+    try {
+      console.log(job._id, authCandidate._id);
+      const application = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/applications/get-application`,
+        {
+          params: {
+            job_id: job._id,
+            candidate_id: authCandidate._id,
+          },
+        }
+      );
+      console.log(application.data);
+      if(application.data){
+        return toast.success("You have already applied for this job");
+      }
+      
+    } catch (error) {
+      return toast.error(error.message);
+    }
+
+    //Crear Aplicacion
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenC}`,
+        },
+      };
+
+      const application = await axios.post(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/applications/create-application`,
+        {
+          job_id: job._id,
+          candidate_id: authCandidate._id,
+        },
+        config
+      );
+    } catch (error) {
+      return toast.error(error.message);
+    }
+
+    return toast.success("Successful Application");
+  }
 
   // Crear un objeto Date con la fecha de MongoDB
   const dateObject = new Date(job.createdAt);
@@ -105,7 +166,10 @@ function JobDetails() {
                     alt="Icon Corazon"
                   />
                 </button>
-                <button className="text-white font-semibold bg-primary py-[1rem] px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 ">
+                <button
+                  onClick={handleApply}
+                  className="text-white font-semibold bg-primary py-[1rem] px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 "
+                >
                   Apply Now
                 </button>
               </div>

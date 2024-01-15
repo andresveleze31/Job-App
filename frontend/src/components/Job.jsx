@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import useAuthCandidate from "../hooks/useAuthCandidate";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useState } from "react";
 
 function Job({ job }) {
   console.log(job);
+
+  const { authCandidate, tokenC } = useAuthCandidate();
 
   // Crear un objeto Date con la fecha de MongoDB
   const dateObject = new Date(job.createdAt);
@@ -13,6 +19,59 @@ function Job({ job }) {
   // Formatear la fecha según las opciones
   const formattedDate = dateObject.toLocaleDateString("en-US", options);
 
+
+  const [jobId, setJobId] = useState("");
+
+  useEffect(() => {
+    setJobId(job._id);
+  }, [] )
+
+async function handleFavorite(e) {
+  e.preventDefault();
+
+  if (!authCandidate._id) {
+    return toast.error("Create a Candidate Account for Save Jobs");
+  }
+
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenC}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/api/candidates/get-favorite-job/${
+        jobId}/${authCandidate._id}`,
+      config
+    );
+
+    console.log(data);
+
+    if (data) {
+      return toast.success("Job Was Already Added");
+    }
+
+    // Move the declaration of 'job' after the console.log statements
+    const job = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/candidates/create-favorite-job`,
+      {
+        job_id: jobId,
+        candidate_id: authCandidate._id,
+      },
+      config
+    );
+
+    return toast.success("Job Added");
+  } catch (error) {
+    // Handle errors here
+    console.error("Error in handleFavorite:", error);
+    return toast.error("Error adding job to favorites");
+  }
+}
+
+
   return (
     <div className="p-[2rem] border border-slate-200 border-opacity-50 hover:border-primary transition-all duration-300">
       <div>
@@ -20,9 +79,7 @@ function Job({ job }) {
           <div className="flex gap-[2rem] items-center">
             <img
               className="w-[6rem] h-[6rem] "
-              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${
-                job.employer_id.photo
-              }`}
+              src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${job.employer_id.photo}`}
               alt="Logo Employers"
             />
             <div className="flex flex-col gap-[.5rem] ">
@@ -57,7 +114,10 @@ function Job({ job }) {
               </div>
             </div>
           </div>
-          <button className="border h-[4rem] w-[4.2rem] rounded-full p-[1rem] ">
+          <button
+            onClick={handleFavorite}
+            className="border h-[4rem] w-[4.2rem] rounded-full p-[1rem] "
+          >
             <img
               className="filter opacity-25 grayscale w-[2rem] h-[2rem] "
               src="../public/icons/icon_corazon.png"

@@ -9,28 +9,23 @@ import Location from "../models/Location.js";
 import TypeJob from "../models/TypeJob.js";
 import Industry from "../models/Industry.js";
 import CarrerLevel from "../models/CarrerLevel.js";
+import State from "../models/State.js";
 
-const levels = [
+const states = [
   {
-    level: "Executive",
+    state: "Pending",
   },
   {
-    level: "Manager",
+    state: "Approved",
   },
   {
-    level: "Officer",
-  },
-  {
-    level: "Student",
-  },
-  {
-    level: "Others",
+    state: "Rejected",
   },
 ];
 
 
 async function ingresarDatos(){
-  await CarrerLevel.insertMany(levels);
+  await State.insertMany(states);
 }
 
 export {

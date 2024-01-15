@@ -1,49 +1,71 @@
 import React from "react";
 
-function CandidateAside() {
+function CandidateAside({candidate}) {
+  console.log(candidate)
   return (
-    <div >
+    <div>
       <div className="py-[2.5rem] border border-opacity-40 px-[3rem] bg-slate-100 rounded-2xl mt-[-20rem] ">
         <h3 className="font-bold">Information</h3>
 
         <div className="border-b flex justify-between pb-[1.5rem] ">
           <p className="text-customGray text-[1.6rem] ">Offered Salary</p>
-          <p className="text-[1.6rem] font-semibold">$1200 / month</p>
+          <p className="text-[1.6rem] font-semibold">
+            ${Object.keys(candidate).length > 0 && candidate.salary} /{" "}
+            {Object.keys(candidate).length > 0 &&
+              candidate.salaryType.salaryType}
+          </p>
         </div>
 
         <div className="border-b mt-[1.5rem] flex justify-between pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Experience Time</p>
-          <p className="text-[1.6rem] font-semibold">3 Year</p>
+          <p className="text-[1.6rem] font-semibold">
+            {Object.keys(candidate).length > 0 && candidate.experiencetime} Year
+          </p>
         </div>
 
         <div className="border-b mt-[1.5rem] flex justify-between pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Gender</p>
-          <p className="text-[1.6rem] font-semibold">Male</p>
+          <p className="text-[1.6rem] font-semibold">
+            {Object.keys(candidate).length > 0 && candidate.gender_id.gender}
+          </p>
         </div>
 
         <div className="border-b mt-[1.5rem] flex justify-between pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Age</p>
-          <p className="text-[1.6rem] font-semibold">20</p>
+          <p className="text-[1.6rem] font-semibold">
+            {Object.keys(candidate).length > 0 && candidate.age}
+          </p>
         </div>
 
         <div className="border-b mt-[1.5rem] flex justify-between pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Qualification</p>
-          <p className="text-[1.6rem] font-semibold">Master’s Degree</p>
+          <p className="text-[1.6rem] font-semibold">
+            {Object.keys(candidate).length > 0 &&
+              candidate.qualification_id.qualification}
+          </p>
         </div>
 
         <div className="border-b mt-[1.5rem] flex justify-between pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Languages</p>
-          <p className="text-[1.6rem] font-semibold">English, French</p>
+          <p className="text-[1.6rem] font-semibold">
+            {Object.keys(candidate).length > 0 &&
+              candidate.language_id.language}
+          </p>
         </div>
 
         <div className="border-b mt-[1.5rem] flex justify-between pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Email</p>
-          <p className="text-[1.6rem] font-semibold">brooklyn@apus.com</p>
+          <p className="text-[1.6rem] font-semibold">
+            {Object.keys(candidate).length > 0 && candidate.email}
+          </p>
         </div>
 
         <div className="border-b mt-[1.5rem] flex justify-between pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Phone Number</p>
-          <p className="text-[1.6rem] font-semibold">(+88)123-456-789</p>
+          <p className="text-[1.6rem] font-semibold">
+            {Object.keys(candidate).length > 0 &&
+              candidate.number}
+          </p>
         </div>
 
         <div className=" mt-[1.5rem] flex justify-between items-center pb-[1.3rem] ">

@@ -23,6 +23,7 @@ const JobtexProvider = ({ children }) => {
   const [candidates, setCandidates] = useState([]);
 
   const [charging, setCharging] = useState(true);
+  const [infoMessage, setInfoMessage] = useState({});
 
   useEffect(() => {
     const urlGenders = `${
@@ -151,7 +152,9 @@ const JobtexProvider = ({ children }) => {
         setIdEditJob,
         jobs,
         employers,
-        candidates
+        candidates,
+        setInfoMessage,
+        infoMessage
       }}
     >
       {children}

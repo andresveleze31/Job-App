@@ -8,6 +8,7 @@ import employerRoutes from "./routes/employerRoutes.js";
 import foreignRoutes from "./routes/foreignRoutes.js";
 import networkRoutes from "./routes/networkRoutes.js";
 import jobsRoutes from "./routes/jobsRoutes.js";
+import applicationRoutes from "./routes/applicationRoutes.js";
 import { ingresarDatos } from "./config/seed.js";
 
 const app = express();
@@ -35,12 +36,14 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 
+
 //Routing
 app.use("/api/candidates", candidateRoutes);
 app.use("/api/foreign", foreignRoutes);
 app.use("/api/network", networkRoutes);
 app.use("/api/employers", employerRoutes);
 app.use("/api/jobs", jobsRoutes);
+app.use("/api/applications", applicationRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Escuchando en puerto ${process.env.PORT}`);
