@@ -45,6 +45,7 @@ app.use("/api/employers", employerRoutes);
 app.use("/api/jobs", jobsRoutes);
 app.use("/api/applications", applicationRoutes);
 
+
 app.listen(process.env.PORT, () => {
     console.log(`Escuchando en puerto ${process.env.PORT}`);
 })

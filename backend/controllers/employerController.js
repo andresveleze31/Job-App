@@ -1,5 +1,6 @@
 import generarJWT from "../helpers/generarJWT.js";
 import Employer from "../models/Employer.js";
+import FavoriteCandidates from "../models/FavoriteCandidates.js";
 
 async function registerEmployer(req, res) {
   const { email, password } = req.body;
@@ -98,15 +99,118 @@ async function getEmployers(req, res) {
   }
 }
 
-async function getGeneralEmployer(req, res){
+async function getGeneralEmployer(req, res) {
   try {
-    const employers = await Employer.findOne({_id: req.params.id})
+    const employers = await Employer.findOne({ _id: req.params.id })
       .populate("location_id")
       .populate("categorie_id")
       .sort({ createdAt: -1 });
     res.json(employers);
   } catch (error) {
     return res.status(403).json({ msg: error.message });
+  }
+}
+
+//Favorites Functions.
+
+async function createFavoriteCandidate(req, res) {
+  const { employer_id, candidate_id } = req.body;
+
+  try {
+    const favorites = await FavoriteCandidates.create({
+      employer_id,
+      candidate_id,
+    });
+    res.json(favorites);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+async function getFavoriteCandidate(req, res) {
+  const { employer_id, candidate_id } = req.params;
+  try {
+    const favorite = await FavoriteCandidates.findOne({
+      employer_id,
+      candidate_id,
+    });
+    return res.json(favorite);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+const getFavoriteCandidates = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Obtener todas las aplicaciones a esos trabajos
+    const favorites = await FavoriteCandidates.find({
+      employer_id: id,
+    }).populate({
+      path: "candidate_id",
+      populate: {
+        path: "location_id", // Agrega los campos que deseas popular aquí
+      },
+    });
+
+    return res.json(favorites);
+  } catch (error) {
+    console.error("Error al obtener trabajos y aplicaciones:", error);
+    throw error;
+  }
+};
+
+async function deleteFavoriteCandidate(req, res) {
+  const { id } = req.params;
+
+  try {
+    const favorite = await FavoriteCandidates.findOneAndDelete({ _id: id });
+    if (!favorite) {
+      return res.status(404).json({ error: "Job Not Found" });
+    }
+    return res.json(favorite);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+async function changePassword(req, res) {
+  const { id } = req.params;
+  const { password } = req.params;
+
+  try {
+    const candidate = await Employer.findOne({ _id: id });
+
+    candidate.password = password;
+    await candidate.save();
+
+    res.json({ msg: "Password Modified" });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function validatePassword(req, res) {
+  const { id } = req.params;
+  const { password } = req.params;
+
+  try {
+    const employer = await Employer.findOne({ _id: id });
+
+    if (!employer) {
+      return res.status(404).json({ error: "Employer not found" });
+    }
+
+    if (await employer.comprobarPassword(password)) {
+      res.json(true);
+    }
+    else{
+      res.json(false);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
 
@@ -118,4 +222,10 @@ export {
   updateProfile,
   getEmployers,
   getGeneralEmployer,
+  createFavoriteCandidate,
+  deleteFavoriteCandidate,
+  getFavoriteCandidate,
+  getFavoriteCandidates,
+  changePassword,
+  validatePassword,
 };

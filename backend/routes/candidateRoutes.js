@@ -1,5 +1,5 @@
 import express from "express";
-import { createEducation, createExperience, createFavoriteJob, getCandidate, getCandidates, getEducation, getExperience, getFavoriteJob, getProfile, loginCandidate, profile, registerCandidate, updateEducation, updateExperience, updateProfile } from "../controllers/candidateController.js";
+import { changePassword, createEducation, createExperience, createFavoriteJob, deleteFavoriteJob, getCandidate, getCandidates, getEducation, getExperience, getFavoriteJob, getFavoriteJobs, getProfile, loginCandidate, profile, registerCandidate, updateEducation, updateExperience, updateProfile, validatePassword } from "../controllers/candidateController.js";
 import checkAuthCandidate from "../middleware/checkAuthCandidate.js";
 import multer from "multer";
 import path from "path";
@@ -27,5 +27,12 @@ router.get("/get-candidate/:id", getCandidate );
 
 router.post("/create-favorite-job", checkAuthCandidate, createFavoriteJob);
 router.get("/get-favorite-job/:job_id/:candidate_id", getFavoriteJob);
+router.get("/get-favorites-jobs/:id", checkAuthCandidate, getFavoriteJobs);
+router.delete("/delete-favorite-job/:id", checkAuthCandidate, deleteFavoriteJob);
+
+
+router.post("/validate-password/:id/:password", validatePassword);
+router.post("/change-password/:id/:password", changePassword);
+
 
 export default router;

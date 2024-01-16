@@ -1,5 +1,5 @@
 import express from "express";
-import { getEmployers, getGeneralEmployer, getProfile, loginEmployer, profile, registerEmployer, updateProfile } from "../controllers/employerController.js";
+import { changePassword, createFavoriteCandidate, deleteFavoriteCandidate, getEmployers, getFavoriteCandidate, getFavoriteCandidates, getGeneralEmployer, getProfile, loginEmployer, profile, registerEmployer, updateProfile, validatePassword } from "../controllers/employerController.js";
 import checkAuthEmployer from "../middleware/checkAuthEmployer.js";
 
 const router = express.Router();
@@ -15,5 +15,17 @@ router.put("/update-profile/:id", checkAuthEmployer, updateProfile);
 router.get("/get-all-employers", getEmployers);
 router.get("/get-employer/:id", getGeneralEmployer);
 
+
+router.post("/create-favorite-candidate", checkAuthEmployer, createFavoriteCandidate);
+router.get("/get-favorite-candidate/:employer_id/:candidate_id", getFavoriteCandidate);
+router.get("/get-favorites-candidate/:id", checkAuthEmployer, getFavoriteCandidates);
+router.delete(
+  "/delete-favorite-candidate/:id",
+  checkAuthEmployer,
+  deleteFavoriteCandidate
+);
+
+router.post("/validate-password/:id/:password", validatePassword)
+router.post("/change-password/:id/:password", changePassword);
 
 export default router;

@@ -12,10 +12,8 @@ function Job({ job }) {
 
   // Crear un objeto Date con la fecha de MongoDB
   const dateObject = new Date(job.createdAt);
-
   // Configurar las opciones de formato
   const options = { year: "numeric", month: "long", day: "numeric" };
-
   // Formatear la fecha según las opciones
   const formattedDate = dateObject.toLocaleDateString("en-US", options);
 

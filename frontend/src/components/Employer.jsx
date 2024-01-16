@@ -40,15 +40,9 @@ function Employer({employer}) {
         </div>
 
         <div className="flex gap-[2rem] mt-[2rem] items-center">
-          <button className="border rounded-full p-[1rem] ">
-            <img
-              className="filter opacity-25 grayscale w-[2rem] h-[2rem] "
-              src="../public/icons/icon_corazon.png"
-              alt="Icon Corazon"
-            />
-          </button>
+
           <Link className="text-white font-semibold bg-primary py-[1rem] px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 ">
-            2 - Open Jobs
+            Open Jobs
           </Link>
         </div>
       </div>

@@ -28,8 +28,15 @@ function JobEmployer({ job, jobsArray, setJobsArray }) {
       },
     };
 
-
     try {
+
+      const deleteApplications = await axios.delete(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/applications/delete-application-jobs/${job._id}`,
+        config
+      );
+
       const jobDelete = await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/api/jobs/delete-job/${job._id}`,
         config

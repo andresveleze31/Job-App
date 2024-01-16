@@ -1,7 +1,70 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useAuthEmployer from "../hooks/useAuthEmployer";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 function Candidate({ candidate }) {
+
+  const {authEmployer, tokenE} = useAuthEmployer();
+
+  const [candidateId, setCandidateId] = useState("");
+
+  useEffect(() => {
+    setCandidateId(candidate._id);
+  }, []);
+
+
+  async function handleFavorite(e){
+    e.preventDefault();
+
+    if (!authEmployer._id) {
+      return toast.error("Create an Employer Account for Save Jobs");
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenE}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/employers/get-favorite-candidate/${
+          authEmployer._id
+        }/${candidateId}`,
+        config
+      );
+
+      console.log(data);
+
+      if (data) {
+        return toast.success("Candidate Was Already Added");
+      }
+
+      // Move the declaration of 'job' after the console.log statements
+      const candidate = await axios.post(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/employers/create-favorite-candidate`,
+        {
+          employer_id: authEmployer._id,
+          candidate_id: candidateId,
+        },
+        config
+      );
+
+      return toast.success("Candidate Added");
+    } catch (error) {
+      // Handle errors here
+      console.error("Error in handleFavorite:", error);
+      return toast.error("Error adding candidate to favorites");
+    }
+
+  }
 
   console.log(candidate)
   return (
@@ -22,7 +85,7 @@ function Candidate({ candidate }) {
           />
         </div>
         <div className="flex justify-center">
-          <button className="border h-[4rem] w-[4.2rem] rounded-full p-[1rem] ">
+          <button onClick={handleFavorite} className="border h-[4rem] w-[4.2rem] rounded-full p-[1rem] ">
             <img
               className="filter opacity-25 grayscale w-[2rem] h-[2rem] "
               src="../public/icons/icon_corazon.png"

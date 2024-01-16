@@ -161,14 +161,49 @@ async function createFavoriteJob(req, res) {
 async function getFavoriteJob(req, res) {
   console.log("Ejecutandose");
 
-  const {job_id, candidate_id} = req.params;
-  console.log(job_id, candidate_id)
+  const { job_id, candidate_id } = req.params;
+  console.log(job_id, candidate_id);
 
   try {
     const favorite = await FavoriteJobs.findOne({
       job_id,
-      candidate_id
+      candidate_id,
     });
+    return res.json(favorite);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+const getFavoriteJobs = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Obtener todas las aplicaciones a esos trabajos
+    const favorites = await FavoriteJobs.find({
+      candidate_id: id,
+    }).populate({
+      path: "job_id",
+      populate: {
+        path: "location_id industry_id employer_id", // Agrega los campos que deseas popular aquí
+      },
+    });
+
+    return res.json(favorites);
+  } catch (error) {
+    console.error("Error al obtener trabajos y aplicaciones:", error);
+    throw error;
+  }
+};
+
+async function deleteFavoriteJob (req, res) {
+  const { id } = req.params;
+
+  try {
+    const favorite = await FavoriteJobs.findOneAndDelete({ _id: id });
+    if (!favorite) {
+      return res.status(404).json({ error: "Job Not Found" });
+    }
     return res.json(favorite);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -257,6 +292,44 @@ async function updateEducation(req, res) {
   }
 }
 
+async function changePassword(req, res) {
+  const { id } = req.params;
+  const { password } = req.params;
+
+  try {
+    const candidate = await Candidate.findOne({ _id: id });
+
+    candidate.password = password;
+    await candidate.save();
+
+    res.json({ msg: "Password Modified" });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function validatePassword(req, res) {
+  const { id } = req.params;
+  const { password } = req.params;
+
+  try {
+    const employer = await Candidate.findOne({ _id: id });
+
+    if (!employer) {
+      return res.status(404).json({ error: "Employer not found" });
+    }
+
+    if (await employer.comprobarPassword(password)) {
+      res.json(true);
+    } else {
+      res.json(false);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 export {
   registerCandidate,
   loginCandidate,
@@ -272,5 +345,9 @@ export {
   getCandidates,
   getCandidate,
   createFavoriteJob,
-  getFavoriteJob
+  getFavoriteJob,
+  getFavoriteJobs,
+  deleteFavoriteJob,
+  changePassword,
+  validatePassword
 };

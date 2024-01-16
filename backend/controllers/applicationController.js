@@ -98,6 +98,29 @@ const getJobsAndApplicationsByEmployer = async (req, res) => {
   }
 };
 
+async function deleteApplicationsJob(req, res){
+
+  const {id} = req.params;
+
+    try {
+      // Delete all applications with the specified job_id
+      const deletedApplications = await Application.deleteMany({ job_id: id });
+
+      if (deletedApplications.deletedCount === 0) {
+        return res
+          .status(404)
+          .json({ error: "No Applications Found for the Job" });
+      }
+
+      return res.json({
+        message: `Successfully deleted ${deletedApplications.deletedCount} applications for the job`,
+      });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+
+}
+
 async function updateStateApplication(req, res) {
 
    const { candidate_id } = req.params;
@@ -129,4 +152,5 @@ export {
   deleteApplication,
   getJobsAndApplicationsByEmployer,
   updateStateApplication,
+  deleteApplicationsJob,
 };
