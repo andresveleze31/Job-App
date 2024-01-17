@@ -1,7 +1,6 @@
 import React from 'react'
 
 function Education({education}) {
-  console.log(education)
   return (
     <div className="pl-[3.5rem] border-l mt-[3rem] ">
       <p className="text-[1.4rem]">

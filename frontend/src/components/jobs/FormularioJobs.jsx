@@ -3,7 +3,7 @@ import React from "react";
 function FormularioJobs() {
   return (
     <aside className=" ">
-      <form className="bg-slate-100 p-[3rem] rounded-xl">
+      <form className="bg-slate-100 p-[3rem] rounded-xl ">
         <div>
           <label className="block font-bold mb-[1rem] ">Job Title</label>
           <div className="bg-white rounded-xl border p-[1rem] flex gap-[2rem]">

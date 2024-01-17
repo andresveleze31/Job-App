@@ -12,12 +12,15 @@ function CandidateDetail() {
   const [candidate, setCandidate] = useState({});
   const [educations, setEducations] = useState({});
   const [experiences, setExperiences] = useState({});
+  const [networks, setNetworks] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [cargado, setCargado] = useState(false);
 
   useEffect(() => {
 
     async function getCandidate(){
       try {
-        //get-candidate/:id
+
         const { data } = await axios.get(
           `${
             import.meta.env.VITE_BACKEND_URL
@@ -37,9 +40,24 @@ function CandidateDetail() {
             import.meta.env.VITE_BACKEND_URL
           }/api/candidates/get-experience/${id}`
         );
-
         setExperiences(exps.data);
 
+        //get-candidate-networks/:id
+        const netw = await axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/network/get-candidate-networks/${id}`
+        );
+        setNetworks(netw.data);
+
+        const comms = await axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/candidates/get-comments/${id}/candidate`
+        );
+        setComments(comms.data);
+        setCargado(true)
+        
       } catch (error) {
         console.log(error);
       }
@@ -51,11 +69,19 @@ function CandidateDetail() {
   return (
     <div>
       <HeroCandidate candidate={candidate} />
-      <div className=" my-[4rem] contenedor grid grid-cols-[2fr,1fr] gap-[7rem] ">
-        <CandidateInformation candidate={candidate} educations={educations} experiences={experiences} />
+      <div className=" my-[4rem] contenedor grid grid-cols-[2fr,1fr] gap-[7rem] md:grid-cols-1 ">
+        {cargado> 0 && (
+          <CandidateInformation
+            candidate={candidate}
+            comments={comments}
+            setComments={setComments}
+            educations={educations}
+            experiences={experiences}
+          />
+        )}
         <div className="flex flex-col gap-[3rem] ">
-          <CandidateAside candidate={candidate} />
-          <ContactFormCandidate />
+          <CandidateAside candidate={candidate} networks={networks} />
+          <ContactFormCandidate candidate_id={id} />
         </div>
       </div>
     </div>

@@ -8,6 +8,9 @@ function Favorites() {
 
   const [candidates, setCandidates] = useState([]);
 
+    const [modalMessage, setModalMessage] = useState(false);
+
+
   useEffect(() => {
     async function getCandidates() {
       const config = {
@@ -57,7 +60,7 @@ function Favorites() {
 
           <div>
             {candidates.map(candidate => {
-              return <FavoriteCandidate candidate={candidate} candidates={candidates} setCandidates={setCandidates} />
+              return <FavoriteCandidate candidate={candidate} candidates={candidates} setCandidates={setCandidates} modalMessage={modalMessage} setModalMessage={setModalMessage} />
             })}
             
           </div>

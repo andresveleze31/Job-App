@@ -4,11 +4,10 @@ import Error from "./Error";
 import axios from "axios";
 import useAuthCandidate from "../hooks/useAuthCandidate";
 import useAuthEmployer from "../hooks/useAuthEmployer";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function ModalLogin() {
-  const { setLogin, setRegister } = useJobtex();
+function ModalRegister() {
+  const { setRegister, setLogin } = useJobtex();
   const { setAuthCandidate } = useAuthCandidate();
   const { setAuthEmployer } = useAuthEmployer();
 
@@ -16,8 +15,6 @@ function ModalLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [selected, setSelected] = useState("");
-
-  const navigate = useNavigate();
 
   function handleOptionChange(e) {
     setSelected(e.target.value);
@@ -42,19 +39,13 @@ function ModalLogin() {
     if (selected === "candidate") {
       try {
         const { data } = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/candidates/login`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/candidates/register`,
           {
             email,
             password,
           }
         );
-        setAuthCandidate(data);
-        localStorage.setItem("tokenCandidate", data.token);
-
-        setTimeout(() => {
-          navigate("/admin/candidate/profile");
-        }, 3000);
-        toast.success("You will be redirected");
+        toast.success("Candidate Created");
       } catch (error) {
         console.log(error);
       }
@@ -63,19 +54,13 @@ function ModalLogin() {
     if (selected === "employer") {
       try {
         const { data } = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/employers/login`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/employers/register`,
           {
             email,
             password,
           }
         );
-
-        setAuthEmployer(data);
-        localStorage.setItem("tokenEmployer", data.token);
-        setTimeout(() => {
-          navigate("/admin/employer/profile");
-        }, 3000);
-        toast.success("You will be redirected");
+        toast.success("Employer Created");
       } catch (error) {
         console.log(error);
       }
@@ -85,24 +70,15 @@ function ModalLogin() {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50">
       <div className="flex h-full justify-center items-center">
-        <div className="bg-white p-[3rem] rounded-2xl ">
+        <div className="bg-white p-[3rem] rounded-2xl w-[50rem] ">
           <div className="flex justify-between items-center">
-            <h3 className="font-bold m-0">Login to Jobtex</h3>
+            <h3 className="font-bold m-0">Register to Jobtex</h3>
             <button
-              onClick={() => setLogin(false)}
+              onClick={() => setRegister(false)}
               className="font-bold py-[1rem] px-[1.8rem] "
             >
               X
             </button>
-          </div>
-          <div className="bg-sky-200 mt-[2rem] w-[40rem] px-[2rem] py-[1rem] rounded-xl ">
-            <p className="text-[1.4rem] text-customGray">
-              Username: <span className="text-sky-600">candidate</span> or{" "}
-              <span className="text-sky-600">employer</span>
-            </p>
-            <p className="text-[1.4rem] text-customGray">
-              Password: <span className="text-sky-600">demo</span>{" "}
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-[3rem] ">
@@ -164,21 +140,21 @@ function ModalLogin() {
             <input
               className="text-center w-full py-[1rem] bg-primary mt-[2rem] cursor-pointer font-bold transition-all duration-300 hover:bg-opacity-85 rounded-xl text-white "
               type="submit"
-              value={"Login"}
+              value={"Register"}
             />
 
             {error && <Error mensaje={error} />}
           </form>
           <p className="text-center mt-[1rem] text-customGray text-[1.6rem] ">
-            Don't you have an account?{" "}
+            Already have an account?{" "}
             <button
               onClick={() => {
-                setLogin(false);
-                setRegister(true);
+                setRegister(false);
+                setLogin(true);
               }}
               className="text-primary hover:underline"
             >
-              Register
+              Login
             </button>
           </p>
         </div>
@@ -187,4 +163,4 @@ function ModalLogin() {
   );
 }
 
-export default ModalLogin;
+export default ModalRegister;

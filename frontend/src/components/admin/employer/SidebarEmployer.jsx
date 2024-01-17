@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function SidebarEmployer() {
+
   return (
     <aside className="flex h-[calc(100vh-90px)] items-start flex-col gap-[1rem] px-[1.5rem] py-[3rem]  ">
       <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"profile"}>
@@ -67,7 +69,10 @@ function SidebarEmployer() {
         Change Password
       </Link>
 
-      <Link className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"logout"}>
+      <Link onClick={() => {
+        localStorage.removeItem("tokenEmployer")
+        toast.success("You Logout")
+      }} className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl " to={"/"}>
         <img
           className="w-[2rem] h-[2rem] "
           src="../../public/admin/icon_logout.png"

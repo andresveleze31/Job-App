@@ -4,6 +4,8 @@ import generarJWT from "../helpers/generarJWT.js";
 import multer from "multer";
 import Experience from "../models/Experience.js";
 import FavoriteJobs from "../models/FavoriteJobs.js";
+import Message from "../models/Message.js";
+import Comments from "../models/Comment.js";
 
 //Register Candidate
 async function registerCandidate(req, res) {
@@ -196,7 +198,7 @@ const getFavoriteJobs = async (req, res) => {
   }
 };
 
-async function deleteFavoriteJob (req, res) {
+async function deleteFavoriteJob(req, res) {
   const { id } = req.params;
 
   try {
@@ -330,6 +332,72 @@ async function validatePassword(req, res) {
   }
 }
 
+async function getMessages(req, res) {
+  const { candidate_id } = req.params;
+
+  try {
+    const messages = await Message.find({ candidate_id })
+      .populate("candidate_id")
+      .populate({
+        path: "employer_id",
+        populate: {
+          path: "location_id categorie_id", // Agrega los campos que deseas popular aquí
+        },
+      })
+      .sort({ createdAt: -1 });
+    res.json(messages);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function createComment(req, res) {
+  const {candidate_id, employer_id, rating, comment, type} = req.body;
+
+  try {
+    const commenta = await Comments.create({
+      candidate_id,
+      employer_id,
+      rating,
+      comment,
+      type
+    });
+    res.json(commenta);
+  } catch (error) {
+    console.log(error);    
+  }
+}
+
+async function getCommentsCandidate(req, res) {
+  const { candidate_id, type } = req.params;
+
+  try {
+    const comments = await Comments.find({
+      candidate_id, type
+    }).populate("candidate_id").populate("employer_id")
+    res.json(comments);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getCommentsEmployer(req, res) {
+  const { employer_id, type } = req.params;
+
+  try {
+    const comments = await Comments.find({
+      employer_id,
+      type,
+    })
+      .populate("candidate_id")
+      .populate("employer_id");
+    res.json(comments);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export {
   registerCandidate,
   loginCandidate,
@@ -349,5 +417,9 @@ export {
   getFavoriteJobs,
   deleteFavoriteJob,
   changePassword,
-  validatePassword
+  validatePassword,
+  getMessages,
+  createComment,
+  getCommentsCandidate,
+  getCommentsEmployer,
 };

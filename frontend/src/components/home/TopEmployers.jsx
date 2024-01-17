@@ -9,7 +9,7 @@ function TopEmployers() {
 
   return (
     <div className="contenedor my-[10rem] ">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center sm:flex-col sm:items-start sm:gap-[1rem] ">
         <div>
           <h2 className="mb-0 font-bold">Top Employers</h2>
           <p className="text-customGray">
@@ -25,11 +25,10 @@ function TopEmployers() {
           />{" "}
         </Link>
       </div>
-      <div className="grid mt-[5rem] grid-cols-3 gap-[2rem] ">
-        {employers.map(emp => {
-          return <Employer employer={emp} />
+      <div className="grid mt-[5rem] grid-cols-3 gap-[2rem] sm:grid-cols-1 md:grid-cols-2 ">
+        {employers.map((emp) => {
+          return <Employer employer={emp} />;
         })}
-
       </div>
     </div>
   );

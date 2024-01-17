@@ -5,6 +5,7 @@ const JobtexContext = createContext();
 
 const JobtexProvider = ({ children }) => {
   const [login, setLogin] = useState(false);
+  const [register, setRegister] = useState(false);
   const [idEditJob, setIdEditJob] = useState("");
 
   const [genders, setGenders] = useState([]);
@@ -135,6 +136,8 @@ const JobtexProvider = ({ children }) => {
   return (
     <JobtexContext.Provider
       value={{
+        register,
+        setRegister,
         login,
         setLogin,
         genders,
@@ -154,7 +157,8 @@ const JobtexProvider = ({ children }) => {
         employers,
         candidates,
         setInfoMessage,
-        infoMessage
+        infoMessage,
+        
       }}
     >
       {children}

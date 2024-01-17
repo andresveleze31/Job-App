@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast';
 
 function SidebarCandidate() {
   return (
@@ -26,18 +27,6 @@ function SidebarCandidate() {
           alt="Icon jobs"
         />
         My Resume
-      </Link>
-
-      <Link
-        className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
-        to={"followers"}
-      >
-        <img
-          className="w-[2rem] h-[2rem] "
-          src="../../public/admin/icon_follow.png"
-          alt="Icon Followers"
-        />
-        Followers
       </Link>
 
       <Link
@@ -89,8 +78,12 @@ function SidebarCandidate() {
       </Link>
 
       <Link
+        onClick={() => {
+          localStorage.removeItem("tokenCandidate");
+          toast.success("You Logout");
+        }}
         className="flex w-full py-[1rem] px-[2rem]  hover:bg-gray-100 text-[1.4rem] transition-all duration-300 font-semibold items-center gap-[1rem] rounded-xl "
-        to={"logout"}
+        to={"/"}
       >
         <img
           className="w-[2rem] h-[2rem] "

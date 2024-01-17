@@ -5,7 +5,7 @@ import Video from "../Video";
 import SectionComment from "../SectionComment";
 import FormularioReview from "../FormularioReview";
 
-function CandidateInformation({ candidate, educations, experiences }) {
+function CandidateInformation({ candidate, educations, experiences, comments, setComments }) {
   return (
     <main>
       <div>
@@ -32,9 +32,16 @@ function CandidateInformation({ candidate, educations, experiences }) {
         <Video url={candidate.video} />
       </div>
       <div className="mt-[4rem] ">
-        <h3 className="font-bold">2 Comments</h3>
-        <SectionComment />
-        <FormularioReview />
+        <h3 className="font-bold">{comments.length} Comment(s)</h3>
+        {comments.length > 0 && <SectionComment comments={comments} />}
+        {candidate._id && (
+          <FormularioReview
+            setComments={setComments}
+            comments={comments}
+            candidate_id={candidate._id}
+            type={"candidate"}
+          />
+        )}
       </div>
     </main>
   );

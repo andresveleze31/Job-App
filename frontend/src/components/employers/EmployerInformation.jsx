@@ -5,7 +5,8 @@ import Job from "../Job";
 import SectionComment from "../SectionComment";
 import FormularioReview from "../FormularioReview";
 
-function EmployerInformation({employer}) {
+function EmployerInformation({employer, comments, setComments}) {
+
   return (
     <main>
       <div>
@@ -20,19 +21,26 @@ function EmployerInformation({employer}) {
       <div className="mt-[4rem]">
         <div className="flex justify-between items-center mb-[3rem] ">
           <h3 className="font-bold m-0">Open Positions</h3>
-          <Link to={"/jobs"} className="text-primary">Browse Full List  {" >"}</Link>
+          <Link to={"/jobs"} className="text-primary">
+            Browse Full List {" >"}
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-[2rem]">
-        </div>
+        <div className="grid grid-cols-1 gap-[2rem]"></div>
       </div>
 
       <div className="mt-[4rem] ">
         <h3 className="font-bold">2 Comments</h3>
-        <SectionComment />
-        <FormularioReview />
+        {comments.length > 0 && <SectionComment comments={comments} />}{" "}
+        {employer._id && (
+          <FormularioReview
+            setComments={setComments}
+            comments={comments}
+            employer_id={employer._id}
+            type={"employer"}
+          />
+        )}
       </div>
-
     </main>
   );
 }

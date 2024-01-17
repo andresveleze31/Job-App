@@ -14,7 +14,7 @@ function Employers() {
       <FormularioEmployers />
 
       <div className="contenedor mb-[10rem] ">
-        <div className="grid grid-cols-3 gap-[2rem]">
+        <div className="grid grid-cols-3 gap-[2rem] md:grid-cols-2 sm:grid-cols-1">
           {employers.map((emp) => {
             return <Employer employer={emp} />;
           })}

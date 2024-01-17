@@ -87,7 +87,7 @@ async function getSocialsCandidate(req, res) {
   const { id } = req.params;
 
   try {
-    const socials = await SocialCandidate.find({ candidate_id: id });
+    const socials = await SocialCandidate.find({ candidate_id: id }).populate("social_id");
     res.status(200).json(socials);
   } catch (error) {
     return res.status(400).json({ error: error.message });
@@ -98,7 +98,9 @@ async function getSocialsEmployer(req, res){
     const { id } = req.params;
 
     try {
-      const socials = await SocialEmployer.find({ employer_id: id });
+      const socials = await SocialEmployer.find({ employer_id: id }).populate(
+        "social_id"
+      );
       res.status(200).json(socials);
     } catch (error) {
       return res.status(400).json({ error: error.message });

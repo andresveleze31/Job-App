@@ -15,7 +15,7 @@ function Candidates() {
       <FormularioCandidates />
 
       <div className="contenedor mb-[10rem] ">
-        <div className="grid grid-cols-3 gap-[4rem]">
+        <div className="grid grid-cols-3 gap-[4rem] sm:grid-cols-1 md:grid-cols-2">
           {candidates.map(cand => {
             return <Candidate candidate={cand} />
           })}

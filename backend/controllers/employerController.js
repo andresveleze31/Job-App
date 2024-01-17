@@ -1,6 +1,7 @@
 import generarJWT from "../helpers/generarJWT.js";
 import Employer from "../models/Employer.js";
 import FavoriteCandidates from "../models/FavoriteCandidates.js";
+import Message from "../models/Message.js";
 
 async function registerEmployer(req, res) {
   const { email, password } = req.body;
@@ -214,6 +215,31 @@ async function validatePassword(req, res) {
   }
 }
 
+async function getMessages(req, res) {
+  const { employer_id } = req.params;
+
+  try {
+    const messages = await Message.find({ employer_id })
+      .populate({
+        path: "candidate_id",
+        populate: {
+          path: "location_id categorie_id", // Agrega los campos que deseas popular aquí
+        },
+      })
+      .populate({
+        path: "employer_id",
+        populate: {
+          path: "location_id categorie_id", // Agrega los campos que deseas popular aquí
+        },
+      })
+      .sort({ createdAt: -1 });
+    res.json(messages);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 export {
   registerEmployer,
   loginEmployer,
@@ -228,4 +254,5 @@ export {
   getFavoriteCandidates,
   changePassword,
   validatePassword,
+  getMessages,
 };

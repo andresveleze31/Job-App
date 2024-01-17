@@ -116,13 +116,13 @@ function Candidate({ candidate }) {
               alt="Icon Location"
             />
             <p className="text-[1.4rem] text-customGray">
-              ${candidate.salary} / {candidate.salaryType.salaryType}
+              ${candidate.salary} / {candidate.salary && candidate.salaryType.salaryType}
             </p>
           </div>
         </div>
         <div className="flex mt-[2rem]  gap-[1rem] ">
           <Link className="bg-slate-200 hover:text-primary transition-all duration-300 rounded-full text-[1.2rem] px-[1rem] py-[0.5rem]  ">
-            {candidate.categorie_id.categorie}
+            {candidate.salary && candidate.categorie_id.categorie}
           </Link>
         </div>
         <Link

@@ -2,11 +2,13 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-function EmployerAside({ employer }) {
+function EmployerAside({ employer, networks }) {
   useEffect(() => {
     async function getNetworksEmployer() {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/network/get-employer-networks/${employer._id}`
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/network/get-employer-networks/${employer._id}`
       );
       console.log(data);
     }
@@ -64,35 +66,22 @@ function EmployerAside({ employer }) {
         <div className=" mt-[1.5rem] flex justify-between items-center pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Socials</p>
           <div className="flex gap-[2rem] items-center">
-            <div className="p-[1rem] group cursor-pointer hover:bg-primary transition-all duration-300 rounded-full bg-gray-200 ">
-              <img
-                className="w-[2rem] group-hover:filter group-hover:invert transition-all duration-300 h-[2rem] "
-                src="../../public/icons/icon_facebook.png"
-                alt="Icon Social"
-              />
-            </div>
-
-            <div className="p-[1rem] group cursor-pointer hover:bg-primary transition-all duration-300 rounded-full bg-gray-200 ">
-              <img
-                className="w-[2rem] group-hover:filter group-hover:invert transition-all duration-300 h-[2rem] "
-                src="../../public/icons/icon_linkedin.png"
-                alt="Icon Social"
-              />
-            </div>
-            <div className="p-[1rem] group cursor-pointer hover:bg-primary transition-all duration-300 rounded-full bg-gray-200 ">
-              <img
-                className="w-[2rem] group-hover:filter group-hover:invert transition-all duration-300 h-[2rem] "
-                src="../../public/icons/icon_pinterest.png"
-                alt="Icon Social"
-              />
-            </div>
-            <div className="p-[1rem] group cursor-pointer hover:bg-primary transition-all duration-300 rounded-full bg-gray-200 ">
-              <img
-                className="w-[2rem] group-hover:filter group-hover:invert transition-all duration-300 h-[2rem] "
-                src="../../public/icons/icon_google.png"
-                alt="Icon Social"
-              />
-            </div>
+            {networks.map((network) => (
+              <a
+                key={network._id}
+                href={`${network.url}`} // URL a la que quieres redirigir
+                target="_blank" // Abre en una nueva pestaña
+                rel="noopener noreferrer"
+              >
+                <div className="p-[1rem] group cursor-pointer hover:bg-primary transition-all duration-300 rounded-full bg-gray-200">
+                  <img
+                    className="w-[2rem] group-hover:filter group-hover:invert transition-all duration-300 h-[2rem]"
+                    src={`../../public/icons/icon_${network.social_id.social_name}.png`}
+                    alt="Icon Social"
+                  />
+                </div>
+              </a>
+            ))}
           </div>{" "}
         </div>
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { changePassword, createFavoriteCandidate, deleteFavoriteCandidate, getEmployers, getFavoriteCandidate, getFavoriteCandidates, getGeneralEmployer, getProfile, loginEmployer, profile, registerEmployer, updateProfile, validatePassword } from "../controllers/employerController.js";
+import { changePassword, createFavoriteCandidate, deleteFavoriteCandidate, getEmployers, getFavoriteCandidate, getFavoriteCandidates, getGeneralEmployer, getMessages, getProfile, loginEmployer, profile, registerEmployer, updateProfile, validatePassword } from "../controllers/employerController.js";
 import checkAuthEmployer from "../middleware/checkAuthEmployer.js";
 
 const router = express.Router();
@@ -27,5 +27,8 @@ router.delete(
 
 router.post("/validate-password/:id/:password", validatePassword)
 router.post("/change-password/:id/:password", changePassword);
+
+router.get("/get-messages/:employer_id", getMessages);
+
 
 export default router;

@@ -18,7 +18,7 @@ function FeaturedJobs() {
         </p>
       </div>
 
-      <div className="mt-[5rem] grid grid-cols-2 gap-[4rem]">
+      <div className="mt-[5rem] grid grid-cols-2 gap-[4rem] sm:grid-cols-1">
         {jobs.map(job => {
           return <Job job={job} />
         })}

@@ -5,7 +5,7 @@ function Employer({employer}) {
   console.log(employer)
   return (
     <div className="p-[2rem] border border-slate-200 border-opacity-50 hover:border-primary transition-all duration-300 flex justify-center">
-      <div>
+      <div className='flex-col items-center'>
         <div className="flex gap-[2rem] items-center ">
           <img
             className="w-[6rem] h-[6rem] "
@@ -16,7 +16,7 @@ function Employer({employer}) {
           />
           <div className="flex flex-col gap-[.5rem] ">
             <Link className="text-[1.4rem] text-primary font-bold hover:underline">
-              {employer.categorie_id.categorie}
+              {employer.email > 0 && employer.categorie_id.categorie}
             </Link>
             <Link
               to={`/employers/${employer._id}`}
@@ -39,8 +39,7 @@ function Employer({employer}) {
           </div>
         </div>
 
-        <div className="flex gap-[2rem] mt-[2rem] items-center">
-
+        <div className="flex gap-[2rem] mt-[2rem] justify-center items-center">
           <Link className="text-white font-semibold bg-primary py-[1rem] px-[3rem] rounded-lg cursor-pointer hover:bg-white hover:text-primary border border-primary transition-all duration-300 ">
             Open Jobs
           </Link>

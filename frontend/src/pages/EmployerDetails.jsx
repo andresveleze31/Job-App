@@ -5,27 +5,49 @@ import EmployerAside from "../components/employers/EmployerAside";
 import ContactFormEmployer from "../components/employers/ContactFormEmployer";
 import Map from "../components/Map";
 import axios from "axios";
+import useAuthCandidate from "../hooks/useAuthCandidate";
 
 function EmployerDetails() {
   const { id } = useParams();
+  const {authCandidate} = useAuthCandidate();
 
-  const [employer, setEmployer] = useState({})
+  const [employer, setEmployer] = useState({});
+
+  const [networks, setNetworks] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [cargado, setCargado] = useState(false);
 
   useEffect(() => {
-    async function getEmployer(){
+    async function getEmployer() {
       try {
         const { data } = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/employers/get-employer/${id}`
         );
         setEmployer(data);
-        console.log(data)
+
+        const netw = await axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/network/get-employer-networks/${id}`
+        );
+        setNetworks(netw.data);
+        console.log(netw.data);
+
+        const comms = await axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/candidates/get-comments-employer/${id}/employer`
+        );
+        console.log("Hola" + comms.data);
+        setComments(comms.data);
+        setCargado(true);
+
       } catch (error) {
         console.log(error);
-        
       }
     }
     getEmployer();
-  },[] )
+  }, []);
 
   return (
     <div>
@@ -71,14 +93,16 @@ function EmployerDetails() {
         </div>
       </header>
       <div className="mt-[14rem] mb-[4rem] contenedor grid grid-cols-[2fr,1fr] gap-[7rem] ">
-        <EmployerInformation employer={employer} />
+        {cargado && (
+          <EmployerInformation employer={employer} comments={comments} setComments={comments} />
+        )}
 
         <div className="flex flex-col gap-[3rem] ">
           {Object.keys(employer).length > 0 && (
             <Map lat={employer.lat} long={employer.long} />
           )}
-          <EmployerAside employer={employer} />
-          <ContactFormEmployer />
+          <EmployerAside employer={employer} networks={networks} />
+          <ContactFormEmployer employer_id={id} />
         </div>
       </div>
     </div>
