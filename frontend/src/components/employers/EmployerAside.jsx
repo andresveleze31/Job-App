@@ -66,7 +66,7 @@ function EmployerAside({ employer, networks }) {
         <div className=" mt-[1.5rem] flex justify-between items-center pb-[1.3rem] ">
           <p className="text-customGray text-[1.6rem] ">Socials</p>
           <div className="flex gap-[2rem] items-center">
-            {networks.map((network) => (
+            {networks.length > 0 && networks.map((network) => (
               <a
                 key={network._id}
                 href={`${network.url}`} // URL a la que quieres redirigir

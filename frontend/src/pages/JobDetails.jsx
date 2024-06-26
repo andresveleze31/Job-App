@@ -14,6 +14,7 @@ function JobDetails() {
   const [job, setJob] = useState({});
   const [cargando, setCargando] = useState(true);
   const [employer, setEmployer] = useState({});
+  const [networks, setNetworks] = useState([]);
 
   const { authCandidate, tokenC } = useAuthCandidate();
 
@@ -27,13 +28,22 @@ function JobDetails() {
       console.log(data);
 
       try {
+
+
         const employer = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/employers/get-employer/${
             data.employer_id._id
           }`
         );
         setEmployer(employer.data);
-        console.log(employer);
+
+        const netw = await axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/network/get-employer-networks/${data.employer_id._id}`
+        );
+        setNetworks(netw.data);
+
       } catch (error) {
         console.log(error);
       }
@@ -201,7 +211,7 @@ function JobDetails() {
             <Map lat={Number(job.lat)} long={Number(job.long)} />
           )}
           <JobAside job={job} />
-          <EmployerAside employer={employer} />
+          <EmployerAside employer={employer} networks={networks} />
           <ContactFormEmployer />
         </div>
       </div>
